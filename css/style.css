@@ -2558,6 +2558,31 @@ h1, h2, h3, h4, h5, h6 {
     gap: 12px;
 }
 
+.brand-logo-img {
+    height: 38px;
+    width: auto;
+    max-height: 38px;
+    object-fit: contain;
+    display: inline-block;
+    transition: transform 0.25s ease;
+}
+.navbar-brand:hover .brand-logo-img {
+    transform: scale(1.05);
+}
+
+.footer-brand-logo-img {
+    height: 42px;
+    width: auto;
+    max-height: 42px;
+    object-fit: contain;
+    display: inline-block;
+    filter: brightness(0) invert(1);
+    transition: transform 0.25s ease;
+}
+.footer-brand-wrap a:hover .footer-brand-logo-img {
+    transform: scale(1.05);
+}
+
 .navbar-floating-inner .brand-badge {
     width: 42px;
     height: 42px;

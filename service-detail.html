@@ -15,8 +15,9 @@
 
     <link href="lib/animate/animate.min.css" rel="stylesheet">
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="img/logo.png">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css?v=3.0" rel="stylesheet">
+    <link href="css/style.css?v=5.1" rel="stylesheet">
     <style>
         /* ---- Service Detail Page Styles ---- */
         .sd-hero {
@@ -157,35 +158,38 @@
         </div>
     </div>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top navbar-light px-4 px-lg-5 py-3 py-lg-0">
-        <a href="index.html" class="navbar-brand p-0 d-flex align-items-center">
-            <div class="brand-badge me-2">
-                <i class="fas fa-heartbeat"></i>
-            </div>
-            <div>
-                <span class="brand-name">DM3</span>
-                <span class="brand-badge-sub">SYSTEM</span>
-            </div>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="fa fa-bars"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto py-0">
-                <a href="index.html" class="nav-item nav-link">Home</a>
-                <a href="index.html#about" class="nav-item nav-link">About</a>
-                <a href="index.html#services" class="nav-item nav-link active">Services</a>
-                <a href="index.html#custom-forms-feature" class="nav-item nav-link">Features</a>
-                <a href="index.html#faq" class="nav-item nav-link">FAQ</a>
-                <a href="index.html#testimonial" class="nav-item nav-link">Testimonials</a>
-            </div>
-            <a href="https://dm3.dm3system.com" class="btn btn-signin-modern ms-lg-3">
-                <span>Sign In</span>
-                <i class="fas fa-arrow-right ms-2 fs-7"></i>
+    <!-- Floating Island Navbar Start -->
+    <header class="header-nav-wrapper">
+        <nav class="navbar navbar-expand-lg navbar-floating-inner py-2 px-3 px-lg-4">
+            <a href="index.html" class="navbar-brand p-0 d-inline-flex align-items-center">
+                <img src="img/logo.png" alt="DM3 System" class="brand-logo-img">
             </a>
-        </div>
-    </nav>
+            
+            <button class="navbar-toggler border-0 shadow-none px-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-label="Toggle navigation">
+                <span class="fas fa-bars text-primary fs-4"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav mx-auto py-2 py-lg-0 align-items-lg-center">
+                    <a href="index.html" class="nav-item nav-link">Home</a>
+                    <a href="index.html#about" class="nav-item nav-link">About</a>
+                    <a href="index.html#services" class="nav-item nav-link active">Services</a>
+                    <a href="index.html#roi-calculator" class="nav-item nav-link">ROI Calculator</a>
+                    <a href="index.html#custom-forms-feature" class="nav-item nav-link">Smart Forms <span class="nav-new-chip">New</span></a>
+                    <a href="index.html#testimonial" class="nav-item nav-link">Partners</a>
+                    <a href="index.html#faq" class="nav-item nav-link">FAQ</a>
+                </div>
+
+                <div class="d-flex align-items-center gap-2 nav-actions">
+                    <a href="https://dm3.dm3system.com" class="btn btn-nav-signin">
+                        <span>Sign In</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- Floating Island Navbar End -->
 
     <!-- Hero Banner -->
     <div class="sd-hero" id="sd-hero">
@@ -275,14 +279,10 @@
             <div class="row g-5">
                 <!-- Col 1: Brand & Bio -->
                 <div class="col-lg-4 col-md-6">
-                    <div class="footer-brand-wrap">
-                        <div class="brand-badge">
-                            <i class="fas fa-heartbeat"></i>
-                        </div>
-                        <div>
-                            <h3 class="footer-brand-title">DM3</h3>
-                            <span class="brand-subtitle text-white-50">Operations Platform</span>
-                        </div>
+                    <div class="footer-brand-wrap mb-3">
+                        <a href="index.html" class="d-inline-block">
+                            <img src="img/logo.png" alt="DM3 System" class="footer-brand-logo-img">
+                        </a>
                     </div>
                     <p class="footer-tagline">
                         Enterprise software engineered to streamline DME operations, patient tracking, doctor scheduling, and customized clinical smart forms.
