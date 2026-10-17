@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title id="page-title">Service Detail - DM3 SYSTEM</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta id="meta-desc" content="" name="description">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css?v=3.0" rel="stylesheet">
+    <style>
+        /* ---- Service Detail Page Styles ---- */
+        .sd-hero {
+            padding: 140px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        .sd-hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+        .sd-hero .container { position: relative; z-index: 2; }
+        .sd-icon-wrap {
+            width: 90px; height: 90px;
+            border-radius: 24px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 28px;
+            font-size: 2.4rem;
+        }
+        .sd-badge {
+            display: inline-block;
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px;
+            text-transform: uppercase; padding: 5px 16px;
+            border-radius: 50px; margin-bottom: 16px;
+        }
+        .sd-feature-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+            height: 100%;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .sd-feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+        }
+        .sd-feature-icon {
+            width: 52px; height: 52px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; margin-bottom: 16px;
+        }
+        .sd-step {
+            display: flex; gap: 20px; margin-bottom: 32px; align-items: flex-start;
+        }
+        .sd-step-num {
+            min-width: 44px; height: 44px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 1rem; flex-shrink: 0;
+        }
+        .sd-cta {
+            border-radius: 24px;
+            padding: 60px 48px;
+        }
+        .sd-breadcrumb {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.85rem; margin-bottom: 20px; opacity: 0.75;
+        }
+        .sd-breadcrumb a { color: inherit; text-decoration: none; }
+        .sd-breadcrumb a:hover { text-decoration: underline; }
+        /* Sidebar nav */
+        .sd-sidebar .list-group-item {
+            border: none; padding: 12px 20px; border-radius: 10px !important;
+            margin-bottom: 4px; cursor: pointer; transition: 0.2s;
+            font-weight: 500;
+        }
+        .sd-sidebar .list-group-item.active,
+        .sd-sidebar .list-group-item:hover {
+            background: var(--bs-primary);
+            color: #fff;
+        }
+        .sd-sidebar .list-group-item i { width: 22px; }
+
+        /* Custom Forms NEW feature — pulse badge */
+        @keyframes sd-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(30,58,138,0.25); }
+            50%       { box-shadow: 0 0 0 8px rgba(30,58,138,0); }
+        }
+        .sd-badge-new {
+            animation: sd-pulse 2.2s ease-in-out infinite;
+        }
+        /* Dark Blue active state override for customforms nav item */
+        .sd-sidebar .list-group-item.active {
+            background: linear-gradient(135deg, #0a192f, #1e3a8a) !important;
+        }
+        /* Hero image float animation */
+        @keyframes heroImgFloat {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-14px); }
+        }
+
+        /* ---- Responsive Styles ---- */
+        @media (max-width: 992px) {
+            .sd-hero {
+                padding: 120px 0 60px;
+                text-align: center;
+            }
+            .sd-breadcrumb {
+                justify-content: center;
+            }
+            .sd-icon-wrap {
+                margin: 0 auto 28px auto;
+            }
+            .sd-cta {
+                padding: 40px 24px;
+            }
+            #sd-hero-img {
+                margin-top: 40px;
+            }
+            .sd-sidebar {
+                margin-top: 40px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sd-hero {
+                padding: 100px 0 40px;
+            }
+            .sd-step {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .sd-feature-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Spinner -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width:3rem;height:3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light px-4 px-lg-5 py-3 py-lg-0">
+        <a href="index.html" class="navbar-brand p-0 d-flex align-items-center">
+            <div class="brand-badge me-2">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <div>
+                <span class="brand-name">DM3</span>
+                <span class="brand-badge-sub">SYSTEM</span>
+            </div>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="fa fa-bars"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto py-0">
+                <a href="index.html" class="nav-item nav-link">Home</a>
+                <a href="index.html#about" class="nav-item nav-link">About</a>
+                <a href="index.html#services" class="nav-item nav-link active">Services</a>
+                <a href="index.html#custom-forms-feature" class="nav-item nav-link">Features</a>
+                <a href="index.html#faq" class="nav-item nav-link">FAQ</a>
+                <a href="index.html#testimonial" class="nav-item nav-link">Testimonials</a>
+            </div>
+            <a href="https://dm3.dm3system.com" class="btn btn-signin-modern ms-lg-3">
+                <span>Sign In</span>
+                <i class="fas fa-arrow-right ms-2 fs-7"></i>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <div class="sd-hero" id="sd-hero">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-7 wow fadeInLeft" data-wow-delay="0.1s">
+                    <div class="sd-breadcrumb" id="sd-breadcrumb">
+                        <a href="index.html">Home</a>
+                        <i class="bi bi-chevron-right"></i>
+                        <a href="index.html#services">Services</a>
+                        <i class="bi bi-chevron-right"></i>
+                        <span id="sd-breadcrumb-title">Service Detail</span>
+                    </div>
+                    <div class="sd-icon-wrap" id="sd-icon-wrap">
+                        <i id="sd-hero-icon"></i>
+                    </div>
+                    <span class="sd-badge" id="sd-badge"></span>
+                    <h1 class="display-4 fw-bold mb-4" id="sd-title"></h1>
+                    <p class="fs-5 mb-5" id="sd-subtitle"></p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="https://dm3.dm3system.com" class="btn btn-primary rounded-pill py-3 px-5">Get Started</a>
+                        <a href="index.html#services" class="btn btn-outline-secondary rounded-pill py-3 px-5">All Services</a>
+                    </div>
+                </div>
+                <div class="col-lg-5 wow fadeInRight text-center" data-wow-delay="0.2s">
+                    <img id="sd-hero-img" src="" alt="" class="img-fluid" style="max-height:380px;filter:drop-shadow(0 20px 50px rgba(0,0,0,0.13));animation:heroImgFloat 4s ease-in-out infinite;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="container-fluid py-5 bg-light">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h4 class="text-primary mb-1">Key Features</h4>
+                <h2 class="display-6 fw-bold" id="sd-features-heading"></h2>
+            </div>
+            <div class="row g-4" id="sd-features-grid"></div>
+        </div>
+    </div>
+
+    <!-- How It Works -->
+    <div class="container py-5 my-3">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 wow fadeInLeft" data-wow-delay="0.1s">
+                <h4 class="text-primary mb-2">How It Works</h4>
+                <h2 class="display-6 fw-bold mb-4" id="sd-steps-heading"></h2>
+                <div id="sd-steps"></div>
+            </div>
+            <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.2s">
+                <div class="sd-sidebar bg-light p-4 rounded-4">
+                    <h6 class="fw-bold mb-3 text-muted text-uppercase" style="font-size:.75rem;letter-spacing:1px;">All Services</h6>
+                    <div class="list-group" id="sd-sidebar-nav"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- High-Impact Modern CTA Section Start -->
+    <div class="container-fluid cta-modern-section">
+        <div class="container">
+            <div class="cta-card text-center text-white position-relative">
+                <div class="cta-glow-bg"></div>
+                <span class="cta-badge mb-3"><i class="fas fa-rocket me-2"></i>Modernize Today</span>
+                <h2 class="display-5 fw-bold mb-3 text-white">Ready to Streamline Your DME Operations?</h2>
+                <p class="fs-5 mb-4 text-white-50 mx-auto" style="max-width: 680px;">
+                    Join forward-thinking healthcare providers and equipment distributors who run their patient care, deliveries, and claims on DM3 System.
+                </p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap mb-4">
+                    <a href="https://dm3.dm3system.com" class="btn btn-light btn-lg rounded-pill px-5 py-3 fw-bold text-primary shadow-lg">Start Free Trial <i class="fas fa-arrow-right ms-2"></i></a>
+                    <a href="index.html#services" class="btn btn-outline-light btn-lg rounded-pill px-5 py-3 fw-bold">Explore Modules</a>
+                </div>
+                <div class="d-flex justify-content-center gap-4 flex-wrap text-white-50 fs-7">
+                    <span><i class="fas fa-check-circle text-success me-1"></i> Instant 14-day setup</span>
+                    <span><i class="fas fa-check-circle text-success me-1"></i> No credit card required</span>
+                    <span><i class="fas fa-check-circle text-success me-1"></i> 100% HIPAA compliant</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- High-Impact Modern CTA Section End -->
+
+    <!-- Modern Multi-Column Footer Start -->
+    <footer class="modern-footer">
+        <div class="container">
+            <div class="row g-5">
+                <!-- Col 1: Brand & Bio -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-brand-wrap">
+                        <div class="brand-badge">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div>
+                            <h3 class="footer-brand-title">DM3</h3>
+                            <span class="brand-subtitle text-white-50">Operations Platform</span>
+                        </div>
+                    </div>
+                    <p class="footer-tagline">
+                        Enterprise software engineered to streamline DME operations, patient tracking, doctor scheduling, and customized clinical smart forms.
+                    </p>
+                    <div class="live-status-pill mt-3">
+                        <span class="status-dot-pulse"></span>
+                        <span>All Systems Operational</span>
+                    </div>
+
+                </div>
+
+                <!-- Col 2: Solutions -->
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="footer-col-title">Solutions</h5>
+                    <ul class="footer-link-list">
+                        <li><a href="service-detail.html?service=patient" class="footer-link">Patient Records</a></li>
+                        <li><a href="service-detail.html?service=doctor" class="footer-link">Doctor Portal</a></li>
+                        <li><a href="service-detail.html?service=delivery" class="footer-link">DME Delivery GPS</a></li>
+                        <li><a href="service-detail.html?service=insurance" class="footer-link">Insurance Claims</a></li>
+                        <li><a href="service-detail.html?service=swo" class="footer-link">Service Work Orders</a></li>
+                        <li><a href="service-detail.html?service=customforms" class="footer-link">Smart PDF Forms</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Platform & Docs -->
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="footer-col-title">Platform</h5>
+                    <ul class="footer-link-list">
+                        <li><a href="index.html#about" class="footer-link">Product Tour</a></li>
+                        <li><a href="index.html#custom-forms-feature" class="footer-link">Form Mapping Engine</a></li>
+                        <li><a href="index.html#services" class="footer-link">Core Features</a></li>
+                        <li><a href="index.html#testimonial" class="footer-link">Customer Reviews</a></li>
+                        <li><a href="index.html#faq" class="footer-link">Frequently Asked Questions</a></li>
+                        <li><a href="https://dm3.dm3system.com" class="footer-link">Client Portal Login</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Trust & Compliance -->
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="footer-col-title">Security &amp; Trust</h5>
+                    <p class="text-white-50 fs-7 mb-3">Enterprise-grade security standards protecting your protected health information (PHI).</p>
+                    <div class="security-badge-item">
+                        <i class="fas fa-shield-alt text-primary fs-5"></i>
+                        <span>HIPAA Compliant Cloud Architecture</span>
+                    </div>
+                    <div class="security-badge-item">
+                        <i class="fas fa-lock text-success fs-5"></i>
+                        <span>256-Bit SSL Data Encryption</span>
+                    </div>
+                    <div class="security-badge-item">
+                        <i class="fas fa-server text-info fs-5"></i>
+                        <span>99.9% High Availability SLA</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Copyright Bar -->
+            <div class="copyright-bar d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                <div>
+                    <span>&copy; 2026 DM3 SYSTEM. All rights reserved.</span>
+                </div>
+                <div class="d-flex gap-4">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Security Statement</a>
+                    <a href="#">HIPAA Compliance</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Modern Multi-Column Footer End -->
+
+    <a href="#" class="btn btn-primary btn-lg-square back-to-top"><i class="fa fa-arrow-up"></i></a>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+    const SERVICES = {
+        patient: {
+            title: "Patient Management",
+            badge: "Core Module",
+            badgeColor: "rgba(30,58,138,0.1)",
+            badgeTextColor: "#1e3a8a",
+            icon: "fas fa-hospital-user",
+            iconBg: "rgba(30,58,138,0.1)",
+            iconColor: "#1e3a8a",
+            heroBg: "linear-gradient(135deg,#f0f7ff 0%,#e0f2fe 100%)",
+            heroImg: "img/img_1.png",
+            subtitle: "Securely store, access, and manage complete patient records with user-friendly tools designed for healthcare providers.",
+            featuresHeading: "Everything You Need to Manage Patients",
+            features: [
+                { icon:"fas fa-user-circle", iconBg:"rgba(30,58,138,0.1)", iconColor:"#1e3a8a", title:"Patient Profiles", desc:"Create and manage detailed profiles including personal info, medical history, and contact details." },
+                { icon:"fas fa-notes-medical", iconBg:"rgba(30,58,138,0.1)", iconColor:"#1e3a8a", title:"Medical Records", desc:"Store diagnoses, prescriptions, and procedure codes linked to each patient record." },
+                { icon:"fas fa-search", iconBg:"rgba(30,58,138,0.1)", iconColor:"#1e3a8a", title:"Quick Search", desc:"Find any patient instantly with powerful search and filter tools." },
+                { icon:"fas fa-history", iconBg:"rgba(30,58,138,0.1)", iconColor:"#1e3a8a", title:"Audit Trail", desc:"Every record change is logged for compliance and accountability." },
+                { icon:"fas fa-lock", iconBg:"rgba(30,58,138,0.1)", iconColor:"#1e3a8a", title:"Secure Access", desc:"Role-based permissions ensure only authorized staff can access sensitive data." },
+                { icon:"fas fa-file-export", iconBg:"rgba(30,58,138,0.1)", iconColor:"#1e3a8a", title:"Export & Reports", desc:"Generate and export patient reports in multiple formats with one click." }
+            ],
+            stepsHeading: "Getting Patient Records Set Up",
+            steps: [
+                { title:"Register the Patient", desc:"Enter the patient's personal and contact information to create their profile." },
+                { title:"Add Medical Information", desc:"Attach diagnosis codes, procedures, and insurance details to the record." },
+                { title:"Assign a Doctor", desc:"Link the patient to their primary doctor for coordinated care." },
+                { title:"Track & Update", desc:"Keep records up to date as treatments progress and generate reports on demand." }
+            ]
+        },
+        doctor: {
+            title: "Doctor Management",
+            badge: "Core Module",
+            badgeColor: "rgba(2,132,199,0.1)",
+            badgeTextColor: "#0284c7",
+            icon: "fas fa-user-md",
+            iconBg: "rgba(2,132,199,0.1)",
+            iconColor: "#0284c7",
+            heroBg: "linear-gradient(135deg,#f0f9ff 0%,#e0f2fe 100%)",
+            heroImg: "img/features-1.png",
+            subtitle: "Organize doctor profiles, specializations, and patient assignments for seamless coordination across your organization.",
+            featuresHeading: "Comprehensive Doctor Profile Tools",
+            features: [
+                { icon:"fas fa-id-card", iconBg:"rgba(2,132,199,0.1)", iconColor:"#0284c7", title:"Doctor Profiles", desc:"Store credentials, specializations, license numbers, and contact details for every physician." },
+                { icon:"fas fa-calendar-alt", iconBg:"rgba(2,132,199,0.1)", iconColor:"#0284c7", title:"Scheduling", desc:"Manage doctor availability and link them to patient appointments." },
+                { icon:"fas fa-users", iconBg:"rgba(2,132,199,0.1)", iconColor:"#0284c7", title:"Patient Assignment", desc:"Assign patients to doctors and track ongoing case loads." },
+                { icon:"fas fa-stethoscope", iconBg:"rgba(2,132,199,0.1)", iconColor:"#0284c7", title:"Specialization Tracking", desc:"Filter and search doctors by specialty for quick referrals." },
+                { icon:"fas fa-chart-bar", iconBg:"rgba(2,132,199,0.1)", iconColor:"#0284c7", title:"Performance Reports", desc:"Review doctor-specific reports including patient volume and activity." },
+                { icon:"fas fa-bell", iconBg:"rgba(2,132,199,0.1)", iconColor:"#0284c7", title:"Notifications", desc:"Alert doctors of new patient assignments or updates automatically." }
+            ],
+            stepsHeading: "Onboarding Doctors to DM3",
+            steps: [
+                { title:"Create Doctor Profile", desc:"Enter the doctor's full name, license, and specialization details." },
+                { title:"Set Availability", desc:"Configure working hours and patient intake capacity." },
+                { title:"Assign Patients", desc:"Link existing or new patients directly to the doctor's dashboard." },
+                { title:"Monitor & Report", desc:"Track case loads and generate doctor activity reports." }
+            ]
+        },
+        delivery: {
+            title: "Delivery Management",
+            badge: "Logistics Module",
+            badgeColor: "rgba(13,110,253,0.1)",
+            badgeTextColor: "#0d6efd",
+            icon: "fas fa-truck",
+            iconBg: "rgba(13,110,253,0.1)",
+            iconColor: "#0d6efd",
+            heroBg: "linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%)",
+            heroImg: "img/hero-img-1.png",
+            subtitle: "Track and manage DME deliveries in real time with automated updates, driver assignments, and delivery confirmations.",
+            featuresHeading: "End-to-End Delivery Visibility",
+            features: [
+                { icon:"fas fa-map-marked-alt", iconBg:"rgba(13,110,253,0.1)", iconColor:"#0d6efd", title:"Real-Time Tracking", desc:"Monitor every delivery from dispatch to doorstep with live status updates." },
+                { icon:"fas fa-user-tag", iconBg:"rgba(13,110,253,0.1)", iconColor:"#0d6efd", title:"Driver Assignment", desc:"Assign deliveries to drivers and manage their routes efficiently." },
+                { icon:"fas fa-clipboard-list", iconBg:"rgba(13,110,253,0.1)", iconColor:"#0d6efd", title:"Delivery Checklist", desc:"Standardized checklists ensure every delivery meets compliance requirements." },
+                { icon:"fas fa-signature", iconBg:"rgba(13,110,253,0.1)", iconColor:"#0d6efd", title:"Digital Signature", desc:"Capture recipient signatures digitally as proof of delivery." },
+                { icon:"fas fa-barcode", iconBg:"rgba(13,110,253,0.1)", iconColor:"#0d6efd", title:"Barcode Scanning", desc:"Scan equipment barcodes to confirm item delivery accuracy." },
+                { icon:"fas fa-history", iconBg:"rgba(13,110,253,0.1)", iconColor:"#0d6efd", title:"Delivery History", desc:"Full audit trail of all past deliveries with timestamps and status logs." }
+            ],
+            stepsHeading: "How Delivery Management Works",
+            steps: [
+                { title:"Create a Delivery Order", desc:"Link an order to a patient, item, and target delivery address." },
+                { title:"Assign a Driver", desc:"Select an available driver and schedule the delivery." },
+                { title:"Track in Real Time", desc:"Monitor the delivery progress and receive automatic status updates." },
+                { title:"Confirm & Archive", desc:"Capture digital signature on delivery and archive the completed record." }
+            ]
+        },
+        insurance: {
+            title: "Insurance Management",
+            badge: "Billing Module",
+            badgeColor: "rgba(30,58,138,0.12)",
+            badgeTextColor: "#1e3a8a",
+            icon: "fas fa-file-invoice-dollar",
+            iconBg: "rgba(30,58,138,0.12)",
+            iconColor: "#1e3a8a",
+            heroBg: "linear-gradient(135deg,#f0f7ff 0%,#e0f2fe 100%)",
+            heroImg: "img/about_1.jpg",
+            subtitle: "Streamline insurance claims, track approvals, and manage patient policy information from a single centralized dashboard.",
+            featuresHeading: "Simplified Insurance Workflow",
+            features: [
+                { icon:"fas fa-file-medical-alt", iconBg:"rgba(30,58,138,0.12)", iconColor:"#1e3a8a", title:"Claim Submission", desc:"Submit insurance claims directly from the system with pre-filled patient data." },
+                { icon:"fas fa-tasks", iconBg:"rgba(30,58,138,0.12)", iconColor:"#1e3a8a", title:"Claim Tracking", desc:"Monitor the status of every claim from submission to approval or denial." },
+                { icon:"fas fa-shield-alt", iconBg:"rgba(30,58,138,0.12)", iconColor:"#1e3a8a", title:"Policy Management", desc:"Store and manage insurance policy details for each patient." },
+                { icon:"fas fa-exclamation-circle", iconBg:"rgba(30,58,138,0.12)", iconColor:"#1e3a8a", title:"Denial Alerts", desc:"Get notified immediately when a claim is denied with reason codes." },
+                { icon:"fas fa-file-contract", iconBg:"rgba(30,58,138,0.12)", iconColor:"#1e3a8a", title:"Authorization Tracking", desc:"Track prior authorizations required for equipment or procedures." },
+                { icon:"fas fa-chart-pie", iconBg:"rgba(30,58,138,0.12)", iconColor:"#1e3a8a", title:"Billing Reports", desc:"Generate detailed billing and reimbursement reports for accounting." }
+            ],
+            stepsHeading: "Managing Insurance Claims",
+            steps: [
+                { title:"Link Patient Policy", desc:"Attach the patient's insurance provider and policy number to their profile." },
+                { title:"Submit a Claim", desc:"Generate and submit a claim with all required documentation." },
+                { title:"Track Approval", desc:"Monitor claim status and respond to any requests for additional information." },
+                { title:"Record Reimbursement", desc:"Log approved payments and reconcile with billing records." }
+            ]
+        },
+        swo: {
+            title: "SWO Management",
+            badge: "Operations Module",
+            badgeColor: "rgba(220,53,69,0.1)",
+            badgeTextColor: "#dc3545",
+            icon: "fas fa-file-contract",
+            iconBg: "rgba(220,53,69,0.1)",
+            iconColor: "#dc3545",
+            heroBg: "linear-gradient(135deg,#fff5f5 0%,#fee2e2 100%)",
+            heroImg: "img/features-1.png",
+            subtitle: "Create, assign, and track Service Work Orders with full accountability — from initiation to completion and sign-off.",
+            featuresHeading: "Full SWO Lifecycle Management",
+            features: [
+                { icon:"fas fa-plus-circle", iconBg:"rgba(220,53,69,0.1)", iconColor:"#dc3545", title:"Create SWOs", desc:"Quickly generate Service Work Orders linked to patients, equipment, and technicians." },
+                { icon:"fas fa-user-cog", iconBg:"rgba(220,53,69,0.1)", iconColor:"#dc3545", title:"Technician Assignment", desc:"Assign the right technician to each SWO based on skill and availability." },
+                { icon:"fas fa-stream", iconBg:"rgba(220,53,69,0.1)", iconColor:"#dc3545", title:"Status Tracking", desc:"Monitor SWO progress through pending, in-progress, and completed stages." },
+                { icon:"fas fa-tools", iconBg:"rgba(220,53,69,0.1)", iconColor:"#dc3545", title:"Equipment Logging", desc:"Track which DME items are covered or serviced under each work order." },
+                { icon:"fas fa-signature", iconBg:"rgba(220,53,69,0.1)", iconColor:"#dc3545", title:"Digital Sign-Off", desc:"Capture technician and patient signatures to close SWOs compliantly." },
+                { icon:"fas fa-folder-open", iconBg:"rgba(220,53,69,0.1)", iconColor:"#dc3545", title:"Archive & Search", desc:"Store all completed SWOs with full-text search for audits and reviews." }
+            ],
+            stepsHeading: "SWO Workflow in DM3",
+            steps: [
+                { title:"Create a Work Order", desc:"Log the service request with patient, equipment, and issue description." },
+                { title:"Assign Technician", desc:"Choose the best-matched technician and schedule the service." },
+                { title:"Execute & Log", desc:"Technician completes the work and logs parts, time, and notes." },
+                { title:"Sign Off & Close", desc:"Capture signatures and close the SWO — it's automatically archived." }
+            ]
+        },
+        customforms: {
+            title: "Customized Smart Forms",
+            badge: "✨ New Feature",
+            badgeColor: "rgba(30,58,138,0.12)",
+            badgeTextColor: "#1e3a8a",
+            icon: "fas fa-file-alt",
+            iconBg: "linear-gradient(135deg,rgba(10,25,47,0.12),rgba(30,58,138,0.12))",
+            iconColor: "#1e3a8a",
+            heroBg: "linear-gradient(135deg,#f0f7ff 0%,#e0f2fe 100%)",
+            heroImg: "img/hero-slide-4.png",
+            subtitle: "Upload any PDF form, visually map patient data fields onto it, and print perfectly auto-filled documents directly from the patient record — zero manual typing.",
+            featuresHeading: "Everything You Need to Build Custom Forms",
+            features: [
+                { icon:"fas fa-file-upload", iconBg:"rgba(30,58,138,0.1)", iconColor:"#1e3a8a", title:"Upload Any PDF", desc:"Upload any PDF document — referral forms, home assessment sheets, CMN forms, custom intake forms — directly into the system." },
+                { icon:"fas fa-crosshairs", iconBg:"rgba(30,58,138,0.1)", iconColor:"#1e3a8a", title:"Visual Field Mapper", desc:"Use the drag-and-drop field mapper to place patient data fields exactly where they should appear on the PDF." },
+                { icon:"fas fa-magic", iconBg:"rgba(30,58,138,0.1)", iconColor:"#1e3a8a", title:"Instant Auto-Fill", desc:"Open any patient record, click their form, and the system instantly generates a filled PDF — no manual entry required." },
+                { icon:"fas fa-text-height", iconBg:"rgba(30,58,138,0.1)", iconColor:"#1e3a8a", title:"Font & Style Control", desc:"Choose font family, size, bold, italic, and underline for every individual field to match your form's original style." },
+                { icon:"fas fa-users", iconBg:"rgba(30,58,138,0.1)", iconColor:"#1e3a8a", title:"Patient & Business Data", desc:"Map patient info (name, DOB, address, insurance, doctor, emergency contact) and your business info onto the same form." },
+                { icon:"fas fa-layer-group", iconBg:"rgba(30,58,138,0.1)", iconColor:"#1e3a8a", title:"Unlimited Custom Forms", desc:"Create and manage as many customized form templates as your organization needs — all stored and reusable." }
+            ],
+            stepsHeading: "How Customized Smart Forms Work",
+            steps: [
+                { title:"Upload Your PDF Form", desc:"Go to List of Forms, click \"Upload Form\", give it a name, and upload your PDF document." },
+                { title:"Open the Field Mapper", desc:"Click the map icon next to your form. The PDF loads in the visual mapper tool." },
+                { title:"Place Patient Fields", desc:"Select a patient data field (e.g. First Name, Date of Birth), then click on the PDF exactly where you want it to appear. Drag to reposition anytime." },
+                { title:"Save the Configuration", desc:"Click \"Save Configuration\" — your field layout is saved and ready to use for any patient." },
+                { title:"Print from Patient Record", desc:"Open a patient profile, go to the Forms tab, and click the PDF icon next to your custom form. A perfectly filled document is generated instantly." }
+            ]
+        }
+    };
+
+    const ALL_SERVICES = [
+        { key:"patient",     label:"Patient Management",        icon:"fas fa-hospital-user" },
+        { key:"doctor",      label:"Doctor Management",         icon:"fas fa-user-md" },
+        { key:"delivery",    label:"Delivery Management",       icon:"fas fa-truck" },
+        { key:"insurance",   label:"Insurance Management",      icon:"fas fa-file-invoice-dollar" },
+        { key:"swo",         label:"SWO Management",            icon:"fas fa-file-contract" },
+        { key:"customforms", label:"Customized Smart Forms",    icon:"fas fa-file-alt", isNew: true }
+    ];
+
+    function getParam(name) {
+        return new URLSearchParams(window.location.search).get(name) || "patient";
+    }
+
+    function buildPage() {
+        const key = getParam("service");
+        const s = SERVICES[key] || SERVICES["patient"];
+
+        // Meta
+        document.title = s.title + " - DM3 SYSTEM";
+        document.getElementById("page-title").textContent = s.title + " - DM3 SYSTEM";
+        document.getElementById("meta-desc").content = s.subtitle;
+
+        // Hero bg
+        document.getElementById("sd-hero").style.background = s.heroBg;
+
+        // Breadcrumb
+        document.getElementById("sd-breadcrumb-title").textContent = s.title;
+
+        // Icon
+        const iconWrap = document.getElementById("sd-icon-wrap");
+        iconWrap.style.background = s.iconBg;
+        document.getElementById("sd-hero-icon").className = s.icon;
+        document.getElementById("sd-hero-icon").style.color = s.iconColor;
+
+        // Badge
+        const badge = document.getElementById("sd-badge");
+        badge.textContent = s.badge;
+        badge.style.background = s.badgeColor;
+        badge.style.color = s.badgeTextColor;
+        badge.style.border = "1px solid " + s.badgeTextColor + "44";
+
+        // Text
+        document.getElementById("sd-title").textContent = s.title;
+        document.getElementById("sd-subtitle").textContent = s.subtitle;
+        document.getElementById("sd-features-heading").textContent = s.featuresHeading;
+        document.getElementById("sd-steps-heading").textContent = s.stepsHeading;
+
+        // Hero image
+        const img = document.getElementById("sd-hero-img");
+        img.src = s.heroImg;
+        img.alt = s.title;
+
+        // Features grid
+        const grid = document.getElementById("sd-features-grid");
+        grid.innerHTML = s.features.map(f => `
+            <div class="col-md-6 col-lg-4 wow fadeInUp">
+                <div class="sd-feature-card">
+                    <div class="sd-feature-icon" style="background:${f.iconBg};">
+                        <i class="${f.icon}" style="color:${f.iconColor};"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">${f.title}</h5>
+                    <p class="text-muted mb-0">${f.desc}</p>
+                </div>
+            </div>
+        `).join("");
+
+        // Steps
+        const stepsEl = document.getElementById("sd-steps");
+        stepsEl.innerHTML = s.steps.map((st, i) => `
+            <div class="sd-step">
+                <div class="sd-step-num" style="background:${s.iconBg};color:${s.iconColor};">${i+1}</div>
+                <div>
+                    <h6 class="fw-bold mb-1">${st.title}</h6>
+                    <p class="text-muted mb-0">${st.desc}</p>
+                </div>
+            </div>
+        `).join("");
+
+        // Sidebar nav
+        const nav = document.getElementById("sd-sidebar-nav");
+        nav.innerHTML = ALL_SERVICES.map(sv => `
+            <a href="service-detail.html?service=${sv.key}"
+               class="list-group-item list-group-item-action${sv.key === key ? " active" : ""}"
+               style="${sv.isNew && sv.key !== key ? 'border-left: 3px solid #1e3a8a;' : ''}">
+                <i class="${sv.icon} me-2"></i> ${sv.label}
+                ${sv.isNew ? '<span style="font-size:0.6rem;font-weight:800;letter-spacing:1px;background:linear-gradient(135deg,#0a192f,#1e3a8a);color:#fff;padding:2px 8px;border-radius:50px;margin-left:6px;vertical-align:middle;">NEW</span>' : ''}
+            </a>
+        `).join("");
+    }
+
+    buildPage();
+    </script>
+</body>
+</html>
