@@ -247,4 +247,33 @@
         }
     });
 
+    // =========================================================================
+    // DARK MODE / LIGHT MODE THEME TOGGLE
+    // =========================================================================
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            $('html').attr('data-theme', 'dark');
+            $('.theme-icon-moon').addClass('d-none');
+            $('.theme-icon-sun').removeClass('d-none');
+            localStorage.setItem('dm3_theme', 'dark');
+        } else {
+            $('html').attr('data-theme', 'light');
+            $('.theme-icon-sun').addClass('d-none');
+            $('.theme-icon-moon').removeClass('d-none');
+            localStorage.setItem('dm3_theme', 'light');
+        }
+    }
+
+    var savedTheme = localStorage.getItem('dm3_theme');
+    if (!savedTheme) {
+        savedTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    applyTheme(savedTheme);
+
+    $(document).on('click', '#theme-toggle', function (e) {
+        e.preventDefault();
+        var nextTheme = $('html').attr('data-theme') === 'dark' ? 'light' : 'dark';
+        applyTheme(nextTheme);
+    });
+
 })(jQuery);
