@@ -42,55 +42,61 @@
         }
     });
 
-    // Hero Header Carousel
-    $(".header-carousel").owlCarousel({
-        items: 1,
-        autoplay: true,
-        autoplayTimeout: 6500,
-        autoplayHoverPause: true,
-        smartSpeed: 600,
-        dots: true,
-        loop: true,
-        nav: false
-    });
+    // Hero Header Carousel (with safety guard)
+    if ($.fn.owlCarousel && $(".header-carousel").length) {
+        $(".header-carousel").owlCarousel({
+            items: 1,
+            autoplay: true,
+            autoplayTimeout: 6500,
+            autoplayHoverPause: true,
+            smartSpeed: 600,
+            dots: true,
+            loop: true,
+            nav: false
+        });
+    }
 
-    // Partner Logo Carousel
-    $(".logo-carousel").owlCarousel({
-        autoplay: true,
-        autoplayTimeout: 3000,
-        autoplayHoverPause: true,
-        smartSpeed: 800,
-        margin: 20,
-        dots: false,
-        loop: true,
-        nav: false,
-        responsive: {
-            0: { items: 1 },
-            480: { items: 2 },
-            768: { items: 3 },
-            992: { items: 4 },
-            1200: { items: 4 }
-        }
-    });
+    // Partner Logo Carousel (with safety guard)
+    if ($.fn.owlCarousel && $(".logo-carousel").length) {
+        $(".logo-carousel").owlCarousel({
+            autoplay: true,
+            autoplayTimeout: 3000,
+            autoplayHoverPause: true,
+            smartSpeed: 800,
+            margin: 20,
+            dots: false,
+            loop: true,
+            nav: false,
+            responsive: {
+                0: { items: 1 },
+                480: { items: 2 },
+                768: { items: 3 },
+                992: { items: 4 },
+                1200: { items: 4 }
+            }
+        });
+    }
 
-    // Testimonial Carousel (Single clean initialization)
-    $(".testimonial-carousel").owlCarousel({
-        autoplay: true,
-        autoplayTimeout: 6500,
-        autoplayHoverPause: true,
-        smartSpeed: 800,
-        center: true,
-        dots: true,
-        dotsData: true,
-        loop: true,
-        margin: 30,
-        items: 1,
-        nav: true,
-        navText: [
-            '<i class="fas fa-chevron-left"></i>',
-            '<i class="fas fa-chevron-right"></i>'
-        ]
-    });
+    // Testimonial Carousel (with safety guard)
+    if ($.fn.owlCarousel && $(".testimonial-carousel").length) {
+        $(".testimonial-carousel").owlCarousel({
+            autoplay: true,
+            autoplayTimeout: 6500,
+            autoplayHoverPause: true,
+            smartSpeed: 800,
+            center: true,
+            dots: true,
+            dotsData: true,
+            loop: true,
+            margin: 30,
+            items: 1,
+            nav: true,
+            navText: [
+                '<i class="fas fa-chevron-left"></i>',
+                '<i class="fas fa-chevron-right"></i>'
+            ]
+        });
+    }
 
     // Back to top button
     $(window).on('scroll', function () {
