@@ -113,8 +113,45 @@
     });
 
     // =========================================================================
-    // INTERACTIVE DME ROI & WORKFLOW CALCULATOR
+    // INTERACTIVE DME ROI & WORKFLOW CALCULATOR (with smooth number tweening)
     // =========================================================================
+    var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var roiTweenFrames = {};
+
+    function animateMetricValue($el, targetVal, formatter, key) {
+        if (prefersReducedMotion || !$el.length) {
+            $el.text(formatter(targetVal));
+            return;
+        }
+        if (roiTweenFrames[key]) {
+            cancelAnimationFrame(roiTweenFrames[key]);
+        }
+        var currentVal = parseFloat($el.data('current-val'));
+        if (isNaN(currentVal)) {
+            $el.data('current-val', targetVal);
+            $el.text(formatter(targetVal));
+            return;
+        }
+        var startVal = currentVal;
+        var startTime = performance.now();
+        var duration = 380;
+
+        function step(now) {
+            var progress = Math.min(1, (now - startTime) / duration);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            var val = startVal + (targetVal - startVal) * eased;
+            $el.text(formatter(val));
+            $el.data('current-val', val);
+            if (progress < 1) {
+                roiTweenFrames[key] = requestAnimationFrame(step);
+            } else {
+                $el.data('current-val', targetVal);
+                $el.text(formatter(targetVal));
+            }
+        }
+        roiTweenFrames[key] = requestAnimationFrame(step);
+    }
+
     function updateRoiCalculations(volume) {
         var vol = parseInt(volume, 10);
         if (isNaN(vol)) vol = 250;
@@ -126,7 +163,7 @@
         var annualSavings = Math.round(hoursSaved * 40 * 12);
         
         // Clean claims rate asymptotically scales toward 99.6%
-        var cleanClaims = (98.6 + Math.min(1.0, vol / 1000)).toFixed(1);
+        var cleanClaims = parseFloat((98.6 + Math.min(1.0, vol / 1000)).toFixed(1));
         
         // Turnaround speed improvement
         var speedPct = 45;
@@ -134,10 +171,10 @@
         if (vol >= 1000) speedPct = 52;
 
         $('#roi-volume-display').text(vol.toLocaleString() + ' Orders / mo');
-        $('#roi-hours-saved').text(hoursSaved);
-        $('#roi-annual-savings').text('$' + annualSavings.toLocaleString());
-        $('#roi-clean-claims').text(cleanClaims + '%');
-        $('#roi-delivery-speed').text(speedPct + '%');
+        animateMetricValue($('#roi-hours-saved'), hoursSaved, function (v) { return Math.round(v).toLocaleString(); }, 'hours');
+        animateMetricValue($('#roi-annual-savings'), annualSavings, function (v) { return '$' + Math.round(v).toLocaleString(); }, 'savings');
+        animateMetricValue($('#roi-clean-claims'), cleanClaims, function (v) { return v.toFixed(1) + '%'; }, 'claims');
+        animateMetricValue($('#roi-delivery-speed'), speedPct, function (v) { return Math.round(v) + '%'; }, 'speed');
     }
 
     $('#roi-slider').on('input change', function () {
@@ -493,14 +530,83 @@
         $('#elig-form-error').addClass('d-none');
 
         var $btn = $('#btn-check-eligibility');
+        var $loader = $('#elig-scan-loader');
+        var $fill = $('#elig-scan-fill');
+        var $stepText = $('#elig-scan-step-text');
+        var $pct = $('#elig-scan-pct');
+        var $resultPanel = $('#eligibility-result-panel');
+
         $btn.html('<i class="fas fa-spinner fa-spin me-2"></i> Querying CMS &amp; Medicaid...').prop('disabled', true);
+        $resultPanel.addClass('d-none');
+        $loader.removeClass('d-none');
+        $fill.css('width', '15%');
+        $pct.text('15%');
+        $stepText.html('<i class="fas fa-satellite-dish fa-spin me-2 text-primary"></i>Connecting to CMS &amp; State Medicaid EDI 270...');
+
+        var delay = prefersReducedMotion ? 50 : 280;
 
         setTimeout(function () {
+            $fill.css('width', '58%');
+            $pct.text('58%');
+            $stepText.html('<i class="fas fa-shield-alt fa-spin me-2 text-primary"></i>Verifying Medicare Part A/B &amp; QMB Dual-Eligibility...');
+        }, delay);
+
+        setTimeout(function () {
+            $fill.css('width', '92%');
+            $pct.text('92%');
+            $stepText.html('<i class="fas fa-clipboard-check me-2 text-primary"></i>Screening Same-or-Similar DMEPOS records...');
+        }, delay * 2);
+
+        setTimeout(function () {
+            $fill.css('width', '100%');
+            $pct.text('100%');
+            $loader.addClass('d-none');
             renderEligibilityResults();
+
+            // Staggered reveal animation for banner, cards, and screening bar
+            var $targets = $('#elig-result-banner, #elig-card-medicare, #elig-card-medicaid, #elig-same-similar-bar');
+            $targets.removeClass('elig-reveal-in').css('animation-delay', '');
+            if (!prefersReducedMotion) {
+                $targets.each(function (idx) {
+                    var $el = $(this);
+                    void this.offsetWidth;
+                    $el.css('animation-delay', (idx * 75) + 'ms').addClass('elig-reveal-in');
+                });
+            }
+
             $btn.html('<i class="fas fa-sync-alt me-2"></i> Re-Check Eligibility').prop('disabled', false);
             $('#elig-last-checked').html('<i class="fas fa-check-circle text-success me-1"></i> Verified just now');
-        }, 450);
+        }, delay * 3);
     });
+
+    // =========================================================================
+    // TOP SCROLL PROGRESS BAR & CARD SPOTLIGHT / MICRO-TILT ANIMATION
+    // =========================================================================
+    var $scrollBar = $('#scroll-progress-bar');
+    if ($scrollBar.length) {
+        $(window).on('scroll resize', function () {
+            var docHeight = $(document).height() - $(window).height();
+            var pct = docHeight > 0 ? Math.min(100, Math.max(0, ($(window).scrollTop() / docHeight) * 100)) : 0;
+            $scrollBar.css('width', pct.toFixed(1) + '%');
+        });
+    }
+
+    if (!prefersReducedMotion && window.matchMedia && window.matchMedia('(pointer: fine)').matches) {
+        $('.service-item, .step-card').on('mousemove', function (e) {
+            var rect = this.getBoundingClientRect();
+            var x = e.clientX - rect.left;
+            var y = e.clientY - rect.top;
+            var rotateY = ((x / rect.width) - 0.5) * 5;
+            var rotateX = ((0.5 - (y / rect.height)) * 5);
+            this.style.setProperty('--mouse-x', x + 'px');
+            this.style.setProperty('--mouse-y', y + 'px');
+            this.style.transform = 'perspective(900px) rotateX(' + rotateX.toFixed(2) + 'deg) rotateY(' + rotateY.toFixed(2) + 'deg) translateY(-4px)';
+            $(this).addClass('is-hovered');
+        }).on('mouseleave', function () {
+            this.style.transform = '';
+            $(this).removeClass('is-hovered');
+        });
+    }
 
     // =========================================================================
     // DARK MODE / LIGHT MODE THEME TOGGLE

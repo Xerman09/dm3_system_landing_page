@@ -55,6 +55,7 @@
         </div>
     </div>
     <!-- Spinner End -->
+    <div id="scroll-progress-bar" aria-hidden="true"></div>
 
 
     <!-- Navbar & Hero Start -->
@@ -1021,6 +1022,17 @@
                                 </span>
                             </div>
                         </form>
+
+                        <!-- Animated EDI 270/271 Verification Scanner -->
+                        <div class="elig-scan-loader mt-3 d-none" id="elig-scan-loader">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="elig-scan-step" id="elig-scan-step-text"><i class="fas fa-satellite-dish fa-spin me-2 text-primary"></i>Connecting to CMS &amp; Medicaid EDI 270...</span>
+                                <span class="elig-scan-pct" id="elig-scan-pct">0%</span>
+                            </div>
+                            <div class="elig-scan-track">
+                                <div class="elig-scan-fill" id="elig-scan-fill"></div>
+                            </div>
+                        </div>
 
                         <!-- Verification Results Panel -->
                         <div class="elig-result-panel mt-3 d-none" id="eligibility-result-panel">
