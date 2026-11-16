@@ -75,6 +75,7 @@
                     <a href="#services" class="nav-item nav-link">Services</a>
                     <a href="#roi-calculator" class="nav-item nav-link">ROI Calculator</a>
                     <a href="#custom-forms-feature" class="nav-item nav-link">Smart Forms <span class="nav-new-chip">New</span></a>
+                    <a href="#eligibility-feature" class="nav-item nav-link">Eligibility</a>
                     <a href="#testimonial" class="nav-item nav-link">Partners</a>
                     <a href="#faq" class="nav-item nav-link">FAQ</a>
                 </div>
@@ -573,9 +574,9 @@
                         </div>
                         <span class="service-pill-tag tag-indigo">Billing &amp; Payer</span>
                         <h4>Insurance Management</h4>
-                        <p>Manage payer policies, verify patient eligibility automatically, and accelerate DME claim approvals with audit checks.</p>
+                        <p>Verify patient Medicare &amp; Medicaid eligibility in real time, manage payer policies, and accelerate DME claim approvals.</p>
                         <ul class="service-micro-checklist">
-                            <li><i class="fas fa-check-circle"></i> Automated pre-authorization checks</li>
+                            <li><i class="fas fa-check-circle"></i> Instant Medicare &amp; Medicaid eligibility check</li>
                             <li><i class="fas fa-check-circle"></i> 99.2%+ clean claim submission</li>
                         </ul>
                         <a href="service-detail.html?service=insurance" class="service-link mt-auto">Read Details <i class="fas fa-arrow-right"></i></a>
@@ -927,6 +928,201 @@
     </div>
     <!-- ===== Customized Forms Feature Section End ===== -->
 
+    <!-- ===== Medicare & Medicaid Eligibility Verification Section Start ===== -->
+    <div class="container-fluid eligibility-section py-5" id="eligibility-feature">
+        <div class="container py-5">
+            <!-- Section Header -->
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 820px;">
+                <span class="feature-label-pill">REAL-TIME VERIFICATION</span>
+                <h4 class="mb-1 text-primary fw-bold">Medicare &amp; Medicaid Eligibility</h4>
+                <h1 class="display-5 mb-4 fw-bold">Check Patient Eligibility Before You Ship</h1>
+                <p class="mb-0 text-muted fs-5">Instantly verify active Medicare Part A/B (DMEPOS) and State Medicaid coverage, deductibles, dual-eligible status, and same-or-similar equipment conflicts in one click.</p>
+            </div>
+
+            <div class="row g-4 align-items-center">
+                <!-- Interactive Eligibility Checker Simulator -->
+                <div class="col-lg-6 wow fadeInLeft" data-wow-delay="0.2s">
+                    <div class="eligibility-sim-wrap">
+                        <div class="smart-form-sim-header">
+                            <div>
+                                <span class="badge bg-primary text-white rounded-pill px-3 py-1 mb-1">Live Interactive Demo</span>
+                                <h5 class="fw-bold mb-0">Medicare &amp; Medicaid Eligibility Check</h5>
+                            </div>
+                            <span class="badge bg-light text-muted border px-2 py-1"><i class="fas fa-exchange-alt text-primary me-1"></i> EDI 270 / 271</span>
+                        </div>
+
+                        <!-- Sample Patient Quick-Select -->
+                        <div class="sim-patient-switcher mb-3">
+                            <span class="sim-switcher-label"><i class="fas fa-user-shield text-primary me-1"></i> Sample Patient Scenarios:</span>
+                            <div class="d-flex gap-2 flex-wrap mt-1">
+                                <button type="button" class="elig-patient-pill active" data-elig-patient="vance">
+                                    <span class="sim-patient-name">Eleanor Vance</span>
+                                    <span class="sim-patient-tag">Dual Eligible</span>
+                                </button>
+                                <button type="button" class="elig-patient-pill" data-elig-patient="sterling">
+                                    <span class="sim-patient-name">Marcus Sterling</span>
+                                    <span class="sim-patient-tag">Medicare Part B</span>
+                                </button>
+                                <button type="button" class="elig-patient-pill" data-elig-patient="hayes">
+                                    <span class="sim-patient-name">Robert Hayes</span>
+                                    <span class="sim-patient-tag">Medicaid Only</span>
+                                </button>
+                                <button type="button" class="elig-patient-pill" data-elig-patient="morales">
+                                    <span class="sim-patient-name">Linda Morales</span>
+                                    <span class="sim-patient-tag">Inactive Plan</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Program Selector -->
+                        <div class="elig-program-tabs mb-3" role="group" aria-label="Select coverage program to check">
+                            <button type="button" class="elig-program-tab active" data-program="both">
+                                <i class="fas fa-layer-group me-1"></i> Medicare &amp; Medicaid
+                            </button>
+                            <button type="button" class="elig-program-tab" data-program="medicare">
+                                <i class="fas fa-hospital me-1"></i> Medicare Only
+                            </button>
+                            <button type="button" class="elig-program-tab" data-program="medicaid">
+                                <i class="fas fa-hand-holding-medical me-1"></i> Medicaid Only
+                            </button>
+                        </div>
+
+                        <!-- Patient Lookup Inputs -->
+                        <form id="eligibility-check-form" novalidate>
+                            <div class="row g-2 mb-3">
+                                <div class="col-sm-7">
+                                    <label for="elig-patient-name" class="elig-input-label">Patient Full Name</label>
+                                    <input type="text" class="form-control elig-input" id="elig-patient-name" value="Eleanor Vance" placeholder="e.g., Eleanor Vance" required>
+                                </div>
+                                <div class="col-sm-5">
+                                    <label for="elig-patient-dob" class="elig-input-label">Date of Birth</label>
+                                    <input type="text" class="form-control elig-input" id="elig-patient-dob" value="11/04/1958" placeholder="MM/DD/YYYY" required>
+                                </div>
+                                <div class="col-sm-7">
+                                    <label for="elig-member-id" class="elig-input-label">Medicare MBI / Medicaid ID</label>
+                                    <input type="text" class="form-control elig-input" id="elig-member-id" value="1EG4-TE5-MK72 / MCD-884120" placeholder="Enter MBI or Medicaid ID" required>
+                                </div>
+                                <div class="col-sm-5">
+                                    <label for="elig-state-hcpcs" class="elig-input-label">State &amp; HCPCS Code</label>
+                                    <input type="text" class="form-control elig-input" id="elig-state-hcpcs" value="TX • E0143 (Walker)" placeholder="e.g., TX • E0601">
+                                </div>
+                            </div>
+
+                            <div id="elig-form-error" class="alert alert-danger py-2 px-3 small d-none mb-3" role="alert">
+                                <i class="fas fa-exclamation-triangle me-1"></i> Please enter the patient name, date of birth, and Medicare/Medicaid ID.
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                <button type="submit" class="btn btn-primary rounded-pill px-4 py-2 fw-bold" id="btn-check-eligibility">
+                                    <i class="fas fa-search-plus me-2"></i> Check Eligibility Now
+                                </button>
+                                <span class="text-muted small" id="elig-last-checked">
+                                    <i class="fas fa-shield-alt text-primary me-1"></i> Instant 270/271 Simulation
+                                </span>
+                            </div>
+                        </form>
+
+                        <!-- Verification Results Panel -->
+                        <div class="elig-result-panel mt-3 d-none" id="eligibility-result-panel">
+                            <div class="elig-result-banner" id="elig-result-banner">
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                    <div>
+                                        <span class="elig-banner-sub" id="elig-banner-patient">Eleanor Vance • DOB 11/04/1958</span>
+                                        <h6 class="mb-0 fw-bold" id="elig-banner-summary">Dual Eligible — Medicare Primary &amp; Medicaid Secondary</h6>
+                                    </div>
+                                    <span class="elig-status-badge status-active" id="elig-overall-badge">
+                                        <i class="fas fa-check-circle me-1"></i> Eligible
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mt-2" id="elig-payer-cards-row">
+                                <!-- Medicare Card -->
+                                <div class="col-sm-6" id="elig-card-medicare">
+                                    <div class="elig-payer-card">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="elig-payer-title"><i class="fas fa-hospital text-primary me-1"></i> Medicare</span>
+                                            <span class="elig-status-badge status-active" id="elig-medicare-badge">Active</span>
+                                        </div>
+                                        <div class="elig-payer-detail"><span>Plan:</span> <strong id="elig-medicare-plan">Part A &amp; Part B (DMEPOS)</strong></div>
+                                        <div class="elig-payer-detail"><span>Deductible:</span> <strong id="elig-medicare-deductible">$0.00 Remaining</strong></div>
+                                        <div class="elig-payer-detail"><span>Coinsurance:</span> <strong id="elig-medicare-coins">20% (Covered by Medicaid)</strong></div>
+                                    </div>
+                                </div>
+
+                                <!-- Medicaid Card -->
+                                <div class="col-sm-6" id="elig-card-medicaid">
+                                    <div class="elig-payer-card">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="elig-payer-title"><i class="fas fa-hand-holding-medical text-info me-1"></i> Medicaid</span>
+                                            <span class="elig-status-badge status-active" id="elig-medicaid-badge">Active</span>
+                                        </div>
+                                        <div class="elig-payer-detail"><span>Plan:</span> <strong id="elig-medicaid-plan">TX Medicaid QMB (Secondary)</strong></div>
+                                        <div class="elig-payer-detail"><span>Copay:</span> <strong id="elig-medicaid-copay">$0.00</strong></div>
+                                        <div class="elig-payer-detail"><span>Prior Auth:</span> <strong id="elig-medicaid-auth">Not Required for E0143</strong></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="elig-same-similar mt-2" id="elig-same-similar-bar">
+                                <i class="fas fa-check-double text-success me-2"></i>
+                                <span id="elig-same-similar-text"><strong>Same-or-Similar Check:</strong> Clear — No active conflicting DMEPOS item on file.</span>
+                            </div>
+                            <p class="text-muted mb-0 mt-2" style="font-size: 0.72rem;">* Interactive demo using simulated CMS &amp; State Medicaid EDI 270/271 responses.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Key Capabilities -->
+                <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.2s">
+                    <div class="ps-lg-4">
+                        <h2 class="fw-bold mb-4">Eliminate Claim Denials with <span class="hero-title-gradient">Instant Eligibility Checks</span></h2>
+                        <div class="cf-feature-list">
+                            <div class="cf-feature-item">
+                                <div class="cf-feature-icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Real-Time Medicare &amp; Medicaid Lookup</h6>
+                                    <p class="mb-0 text-muted">Run instant EDI 270/271 checks for Medicare Part A/B (DMEPOS), Medicare Advantage, and all 50 State Medicaid programs directly inside the patient chart.</p>
+                                </div>
+                            </div>
+                            <div class="cf-feature-item">
+                                <div class="cf-feature-icon">
+                                    <i class="fas fa-users-cog"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Dual-Eligible &amp; Secondary Payer Detection</h6>
+                                    <p class="mb-0 text-muted">Automatically identify QMB/SLMB dual-eligible patients so secondary Medicaid coverage is billed cleanly for Medicare's 20% coinsurance.</p>
+                                </div>
+                            </div>
+                            <div class="cf-feature-item">
+                                <div class="cf-feature-icon">
+                                    <i class="fas fa-clipboard-check"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Same-or-Similar DMEPOS Screening</h6>
+                                    <p class="mb-0 text-muted">Catch existing active equipment on file with Medicare before dispatching a walker, wheelchair, or CPAP—preventing costly recoupments and denials.</p>
+                                </div>
+                            </div>
+                            <div class="cf-feature-item">
+                                <div class="cf-feature-icon">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Deductibles, Copays &amp; Prior Auth Alerts</h6>
+                                    <p class="mb-0 text-muted">Surface remaining annual deductibles, patient responsibility, and prior authorization requirements upfront during intake.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="https://dm3.dm3system.com" class="btn btn-primary rounded-pill py-3 px-5 mt-4">Verify Patient Eligibility Now <i class="fas fa-arrow-right ms-2"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ===== Medicare & Medicaid Eligibility Verification Section End ===== -->
+
     <!-- Testimonial Start -->
     <div class="container-fluid testimonial py-5" id="testimonial">
         <div class="container py-5">
@@ -1170,6 +1366,22 @@
                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     Yes! Delivery drivers can access their delivery queue from mobile tablets or smartphones, view optimized delivery routes, record delivery timestamps, and collect digital patient signatures upon equipment handover with automatic sync back to headquarters.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Question 5 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFive">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                    Can DM3 check patient eligibility for Medicare and Medicaid in real time?
+                                </button>
+                            </h2>
+                            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    Yes! DM3 includes built-in real-time EDI 270/271 eligibility verification for Medicare Part A/B (DMEPOS), Medicare Advantage, and State Medicaid plans. It automatically detects dual-eligible (QMB/SLMB) patients, checks remaining deductibles and copays, and screens for Medicare same-or-similar DMEPOS conflicts before you ship equipment.
                                 </div>
                             </div>
                         </div>

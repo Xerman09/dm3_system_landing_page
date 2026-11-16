@@ -2786,6 +2786,7 @@ h1, h2, h3, h4, h5, h6 {
 .hero-title-gradient {
     background: linear-gradient(135deg, #071324 0%, #0f2b5c 40%, #1e40af 75%, #0284c7 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -3797,6 +3798,7 @@ h1, h2, h3, h4, h5, h6 {
 [data-theme="dark"] .hero-title-gradient {
     background: linear-gradient(135deg, #38bdf8 0%, #60a5fa 40%, #93c5fd 80%, #ffffff 100%) !important;
     -webkit-background-clip: text !important;
+    background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
 }
 
@@ -3991,5 +3993,319 @@ h1, h2, h3, h4, h5, h6 {
 [data-theme="dark"]::-webkit-scrollbar-thumb:hover {
     background: #2563eb;
 }
+
+/* ====== Medicare & Medicaid Eligibility Section ====== */
+.eligibility-section {
+    background: linear-gradient(180deg, #e0f2fe 0%, #f8fafc 45%, #ffffff 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.eligibility-sim-wrap {
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    padding: 24px;
+    box-shadow: 0 16px 40px rgba(10, 25, 47, 0.08);
+    position: relative;
+}
+
+.elig-patient-pill {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 50px;
+    padding: 5px 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.elig-patient-pill:hover {
+    border-color: #1e40af;
+    background: #eff6ff;
+}
+
+.elig-patient-pill.active {
+    background: #1e40af;
+    border-color: #1e40af;
+    box-shadow: 0 2px 8px rgba(30, 64, 175, 0.25);
+}
+
+.elig-patient-pill.active .sim-patient-name {
+    color: #ffffff;
+}
+
+.elig-patient-pill.active .sim-patient-tag {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+.elig-program-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.elig-program-tab {
+    flex: 1 1 auto;
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    color: #334155;
+    border-radius: 10px;
+    padding: 7px 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.elig-program-tab:hover {
+    border-color: #1e40af;
+    color: #1e40af;
+}
+
+.elig-program-tab.active {
+    background: #1e3a8a;
+    border-color: #1e3a8a;
+    color: #ffffff;
+}
+
+.elig-input-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #475569;
+    margin-bottom: 3px;
+    display: block;
+}
+
+.elig-input {
+    font-size: 0.85rem;
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    padding: 7px 12px;
+    background: #f8fafc;
+}
+
+.elig-input:focus {
+    background: #ffffff;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.elig-result-panel {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 16px;
+}
+
+.elig-result-banner {
+    border-radius: 12px;
+    padding: 12px 14px;
+    border: 1px solid #bfdbfe;
+    background: #eff6ff;
+}
+
+.elig-result-banner.banner-inactive {
+    border-color: #fecaca;
+    background: #fef2f2;
+}
+
+.elig-banner-sub {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 2px;
+}
+
+.elig-status-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 50px;
+    white-space: nowrap;
+}
+
+.elig-status-badge.status-active {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #86efac;
+}
+
+.elig-status-badge.status-inactive {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+}
+
+.elig-status-badge.status-neutral {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+}
+
+.elig-payer-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px;
+    height: 100%;
+}
+
+.elig-payer-title {
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.elig-payer-detail {
+    font-size: 0.76rem;
+    color: #475569;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 3px 0;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.elig-payer-detail:last-child {
+    border-bottom: none;
+}
+
+.elig-payer-detail strong {
+    color: #0f172a;
+    text-align: right;
+}
+
+.elig-same-similar {
+    border-radius: 10px;
+    padding: 9px 12px;
+    font-size: 0.78rem;
+    display: flex;
+    align-items: center;
+}
+
+.elig-same-similar.alert-clear {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+}
+
+.elig-same-similar.alert-warn {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+}
+
+/* Dark Mode for Eligibility Section */
+[data-theme="dark"] .eligibility-section {
+    background: linear-gradient(180deg, #0a192f 0%, #0d1f38 50%, #0a192f 100%) !important;
+}
+
+[data-theme="dark"] .eligibility-section h1,
+[data-theme="dark"] .eligibility-section h2 {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .eligibility-sim-wrap {
+    background: #0d1f38 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-theme="dark"] .elig-patient-pill {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+[data-theme="dark"] .elig-patient-pill.active {
+    background: #1e40af !important;
+    border-color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .elig-patient-pill.active .sim-patient-name {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .elig-program-tab {
+    background: rgba(10, 25, 47, 0.8) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .elig-program-tab.active {
+    background: #1e40af !important;
+    border-color: #38bdf8 !important;
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .elig-input-label {
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .elig-input {
+    background: rgba(10, 25, 47, 0.75) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .elig-input:focus {
+    border-color: #38bdf8 !important;
+}
+
+[data-theme="dark"] .elig-result-panel {
+    border-top-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .elig-result-banner {
+    background: rgba(30, 64, 175, 0.25) !important;
+    border-color: rgba(56, 189, 248, 0.35) !important;
+}
+
+[data-theme="dark"] .elig-result-banner.banner-inactive {
+    background: rgba(153, 27, 27, 0.25) !important;
+    border-color: rgba(248, 113, 113, 0.35) !important;
+}
+
+[data-theme="dark"] .elig-result-banner h6 {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .elig-banner-sub {
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .elig-payer-card {
+    background: rgba(10, 25, 47, 0.7) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .elig-payer-title,
+[data-theme="dark"] .elig-payer-detail strong {
+    color: #f1f5f9 !important;
+}
+
+[data-theme="dark"] .elig-payer-detail {
+    color: #94a3b8 !important;
+    border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .elig-same-similar.alert-clear {
+    background: rgba(22, 101, 52, 0.25) !important;
+    border-color: rgba(74, 222, 128, 0.3) !important;
+    color: #86efac !important;
+}
+
+[data-theme="dark"] .elig-same-similar.alert-warn {
+    background: rgba(153, 27, 27, 0.25) !important;
+    border-color: rgba(248, 113, 113, 0.3) !important;
+    color: #fca5a5 !important;
+}
+
 
 

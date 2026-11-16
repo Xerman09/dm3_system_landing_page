@@ -26,7 +26,7 @@
         }
 
         // Active navigation link update based on scroll position
-        var sections = $('section[id], div[id].about-section, div[id].service, div[id].custom-forms-section, div[id].faq-modern, div[id].testimonial');
+        var sections = $('section[id], div[id].about-section, div[id].service, div[id].custom-forms-section, div[id].eligibility-section, div[id].faq-modern, div[id].testimonial');
         sections.each(function () {
             var top = $(this).offset().top - 120;
             var bottom = top + $(this).outerHeight();
@@ -251,6 +251,255 @@
             $btn.html('<i class="fas fa-magic me-2"></i> Simulate 1-Click Auto-Fill').removeClass('btn-outline-primary').addClass('btn-primary');
             isFormFilled = false;
         }
+    });
+
+    // =========================================================================
+    // INTERACTIVE MEDICARE & MEDICAID ELIGIBILITY SIMULATOR
+    // =========================================================================
+    var eligibilityPresets = {
+        vance: {
+            name: "Eleanor Vance",
+            dob: "11/04/1958",
+            memberId: "1EG4-TE5-MK72 / MCD-884120",
+            stateHcpcs: "TX • E0143 (Walker)",
+            overallStatus: "active",
+            overallLabel: "Eligible",
+            summary: "Dual Eligible — Medicare Primary & Medicaid Secondary",
+            medicare: {
+                status: "active",
+                badge: "Active",
+                plan: "Part A & Part B (DMEPOS)",
+                deductible: "$0.00 Remaining",
+                coins: "20% (Covered by Medicaid)"
+            },
+            medicaid: {
+                status: "active",
+                badge: "Active",
+                plan: "TX Medicaid QMB (Secondary)",
+                copay: "$0.00",
+                auth: "Not Required for E0143"
+            },
+            sameSimilarClear: true,
+            sameSimilarText: "<strong>Same-or-Similar Check:</strong> Clear — No active conflicting DMEPOS item on file."
+        },
+        sterling: {
+            name: "Marcus Sterling",
+            dob: "08/19/1972",
+            memberId: "4KM9-PL2-VN38",
+            stateHcpcs: "FL • E0601 (CPAP)",
+            overallStatus: "active",
+            overallLabel: "Medicare Eligible",
+            summary: "Medicare Part B Active — Not Enrolled in Medicaid",
+            medicare: {
+                status: "active",
+                badge: "Active",
+                plan: "Medicare Part B (DMEPOS)",
+                deductible: "$112.00 Remaining",
+                coins: "20% Patient Responsibility"
+            },
+            medicaid: {
+                status: "neutral",
+                badge: "Not Enrolled",
+                plan: "No State Medicaid Policy Found",
+                copay: "N/A",
+                auth: "N/A"
+            },
+            sameSimilarClear: true,
+            sameSimilarText: "<strong>Same-or-Similar Check:</strong> Clear — Eligible for E0601 CPAP initial rental."
+        },
+        hayes: {
+            name: "Robert Hayes",
+            dob: "02/11/1981",
+            memberId: "MCD-CA-9043182",
+            stateHcpcs: "CA • K0004 (Wheelchair)",
+            overallStatus: "active",
+            overallLabel: "Medicaid Eligible",
+            summary: "State Medicaid Active — Medicare Coverage Inactive",
+            medicare: {
+                status: "inactive",
+                badge: "Inactive",
+                plan: "No Active Medicare Part B",
+                deductible: "N/A",
+                coins: "N/A"
+            },
+            medicaid: {
+                status: "active",
+                badge: "Active",
+                plan: "Medi-Cal Managed Care (Primary)",
+                copay: "$0.00",
+                auth: "Prior Auth Required (TAR)"
+            },
+            sameSimilarClear: true,
+            sameSimilarText: "<strong>Same-or-Similar Check:</strong> Clear — Submit TAR prior authorization to Medi-Cal."
+        },
+        morales: {
+            name: "Linda Morales",
+            dob: "06/30/1951",
+            memberId: "7QW2-ZX8-RT19",
+            stateHcpcs: "NY • E0260 (Hospital Bed)",
+            overallStatus: "inactive",
+            overallLabel: "Action Needed",
+            summary: "Coverage Termed / Same-or-Similar Alert Detected",
+            medicare: {
+                status: "inactive",
+                badge: "Termed",
+                plan: "Part B Termed 09/30/2026",
+                deductible: "N/A",
+                coins: "Verify Advantage Plan"
+            },
+            medicaid: {
+                status: "inactive",
+                badge: "Inactive",
+                plan: "NY Medicaid Renewal Pending",
+                copay: "N/A",
+                auth: "Hold Shipment"
+            },
+            sameSimilarClear: false,
+            sameSimilarText: "<strong>Coverage Alert:</strong> Active coverage not confirmed. Verify updated payer card before shipping."
+        }
+    };
+
+    var activeEligPresetKey = "vance";
+    var activeEligProgram = "both";
+    var hasRunEligCheck = false;
+
+    function setEligBadge($el, status, text) {
+        $el.removeClass('status-active status-inactive status-neutral');
+        if (status === 'active') {
+            $el.addClass('status-active').html('<i class="fas fa-check-circle me-1"></i> ' + text);
+        } else if (status === 'inactive') {
+            $el.addClass('status-inactive').html('<i class="fas fa-times-circle me-1"></i> ' + text);
+        } else {
+            $el.addClass('status-neutral').html('<i class="fas fa-minus-circle me-1"></i> ' + text);
+        }
+    }
+
+    function applyEligProgramFilter() {
+        if (activeEligProgram === 'medicare') {
+            $('#elig-card-medicare').removeClass('d-none col-sm-6').addClass('col-12');
+            $('#elig-card-medicaid').addClass('d-none');
+        } else if (activeEligProgram === 'medicaid') {
+            $('#elig-card-medicaid').removeClass('d-none col-sm-6').addClass('col-12');
+            $('#elig-card-medicare').addClass('d-none');
+        } else {
+            $('#elig-card-medicare').removeClass('d-none col-12').addClass('col-sm-6');
+            $('#elig-card-medicaid').removeClass('d-none col-12').addClass('col-sm-6');
+        }
+    }
+
+    function renderEligibilityResults() {
+        var nameInput = $.trim($('#elig-patient-name').val());
+        var dobInput = $.trim($('#elig-patient-dob').val());
+        var idInput = $.trim($('#elig-member-id').val());
+        var stateHcpcsInput = $.trim($('#elig-state-hcpcs').val()) || 'US • DMEPOS';
+
+        var preset = eligibilityPresets[activeEligPresetKey];
+        var isCustomPatient = !preset || nameInput.toLowerCase() !== preset.name.toLowerCase();
+
+        var data;
+        if (isCustomPatient) {
+            data = {
+                overallStatus: "active",
+                overallLabel: "Eligible",
+                summary: activeEligProgram === 'medicare'
+                    ? "Medicare Part B Active (Simulated Check)"
+                    : (activeEligProgram === 'medicaid'
+                        ? "State Medicaid Active (Simulated Check)"
+                        : "Active Medicare & Medicaid Coverage (Simulated)"),
+                medicare: {
+                    status: activeEligProgram === 'medicaid' ? "neutral" : "active",
+                    badge: activeEligProgram === 'medicaid' ? "Skipped" : "Active",
+                    plan: "Part A & Part B (DMEPOS)",
+                    deductible: "$0.00 Remaining",
+                    coins: "20% Coinsurance"
+                },
+                medicaid: {
+                    status: activeEligProgram === 'medicare' ? "neutral" : "active",
+                    badge: activeEligProgram === 'medicare' ? "Skipped" : "Active",
+                    plan: "State Medicaid Plan",
+                    copay: "$0.00",
+                    auth: "Verify for " + stateHcpcsInput
+                },
+                sameSimilarClear: true,
+                sameSimilarText: "<strong>Same-or-Similar Check:</strong> Clear for " + $('<div>').text(stateHcpcsInput).html() + " (ID: " + $('<div>').text(idInput).html() + ")."
+            };
+        } else {
+            data = preset;
+        }
+
+        $('#elig-banner-patient').text(nameInput + ' • DOB ' + dobInput + ' • ID ' + idInput);
+        $('#elig-banner-summary').text(data.summary);
+        setEligBadge($('#elig-overall-badge'), data.overallStatus, data.overallLabel);
+
+        var $banner = $('#elig-result-banner');
+        $banner.removeClass('banner-active banner-inactive').addClass(data.overallStatus === 'inactive' ? 'banner-inactive' : 'banner-active');
+
+        setEligBadge($('#elig-medicare-badge'), data.medicare.status, data.medicare.badge);
+        $('#elig-medicare-plan').text(data.medicare.plan);
+        $('#elig-medicare-deductible').text(data.medicare.deductible);
+        $('#elig-medicare-coins').text(data.medicare.coins);
+
+        setEligBadge($('#elig-medicaid-badge'), data.medicaid.status, data.medicaid.badge);
+        $('#elig-medicaid-plan').text(data.medicaid.plan);
+        $('#elig-medicaid-copay').text(data.medicaid.copay);
+        $('#elig-medicaid-auth').text(data.medicaid.auth);
+
+        var $bar = $('#elig-same-similar-bar');
+        $bar.removeClass('alert-clear alert-warn').addClass(data.sameSimilarClear ? 'alert-clear' : 'alert-warn');
+        $bar.find('i').attr('class', data.sameSimilarClear ? 'fas fa-check-double text-success me-2' : 'fas fa-exclamation-triangle text-danger me-2');
+        $('#elig-same-similar-text').html(data.sameSimilarText);
+
+        applyEligProgramFilter();
+        $('#eligibility-result-panel').removeClass('d-none');
+        hasRunEligCheck = true;
+    }
+
+    $('.elig-patient-pill').on('click', function () {
+        $('.elig-patient-pill').removeClass('active');
+        $(this).addClass('active');
+        activeEligPresetKey = $(this).data('elig-patient') || 'vance';
+        var preset = eligibilityPresets[activeEligPresetKey];
+        if (preset) {
+            $('#elig-patient-name').val(preset.name);
+            $('#elig-patient-dob').val(preset.dob);
+            $('#elig-member-id').val(preset.memberId);
+            $('#elig-state-hcpcs').val(preset.stateHcpcs);
+            $('#elig-form-error').addClass('d-none');
+            if (hasRunEligCheck) {
+                renderEligibilityResults();
+            }
+        }
+    });
+
+    $('.elig-program-tab').on('click', function () {
+        $('.elig-program-tab').removeClass('active');
+        $(this).addClass('active');
+        activeEligProgram = $(this).data('program') || 'both';
+        if (hasRunEligCheck) {
+            renderEligibilityResults();
+        }
+    });
+
+    $('#eligibility-check-form').on('submit', function (e) {
+        e.preventDefault();
+        var nameInput = $.trim($('#elig-patient-name').val());
+        var dobInput = $.trim($('#elig-patient-dob').val());
+        var idInput = $.trim($('#elig-member-id').val());
+
+        if (!nameInput || !dobInput || !idInput) {
+            $('#elig-form-error').removeClass('d-none');
+            return;
+        }
+        $('#elig-form-error').addClass('d-none');
+
+        var $btn = $('#btn-check-eligibility');
+        $btn.html('<i class="fas fa-spinner fa-spin me-2"></i> Querying CMS &amp; Medicaid...').prop('disabled', true);
+
+        setTimeout(function () {
+            renderEligibilityResults();
+            $btn.html('<i class="fas fa-sync-alt me-2"></i> Re-Check Eligibility').prop('disabled', false);
+            $('#elig-last-checked').html('<i class="fas fa-check-circle text-success me-1"></i> Verified just now');
+        }, 450);
     });
 
     // =========================================================================
