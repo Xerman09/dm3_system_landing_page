@@ -1562,6 +1562,12 @@ h1, h2, h3, h4, h5, h6 {
     border: none !important;
     margin: 0 !important;
 }
+.testimonial-dot-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--slate-800, #1e293b);
+    white-space: nowrap;
+}
 
 .testimonial-carousel .owl-dots .owl-dot:hover .testimonial-dot-card {
     opacity: 0.85;
@@ -4097,6 +4103,9 @@ h1, h2, h3, h4, h5, h6 {
 [data-theme="dark"] .testimonial-carousel .owl-dots .testimonial-dot-card {
     background: #0d1f38 !important;
     border-color: rgba(255, 255, 255, 0.15) !important;
+}
+[data-theme="dark"] .testimonial-dot-label {
+    color: #e2e8f0 !important;
 }
 [data-theme="dark"] .testimonial-carousel .owl-dots .owl-dot.active .testimonial-dot-card {
     border-color: #38bdf8 !important;
