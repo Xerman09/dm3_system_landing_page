@@ -77,9 +77,24 @@
         });
     }
 
-    // Testimonial Carousel (with safety guard)
-    if ($.fn.owlCarousel && $(".testimonial-carousel").length) {
-        $(".testimonial-carousel").owlCarousel({
+    // Testimonial Carousel (with safety guard & interactive controls)
+    var $testimonialCarousel = $(".testimonial-carousel");
+    if ($.fn.owlCarousel && $testimonialCarousel.length) {
+        var testimonialAutoPlaying = true;
+        var $slideCounter = $('#testimonial-slide-counter');
+        var $autoplayToggle = $('#testimonial-autoplay-toggle');
+
+        function updateTestimonialCounter(event) {
+            if (!$slideCounter.length || !event || !event.item) return;
+            var total = event.item.count || 4;
+            var current = ((event.item.index - event.relatedTarget._clones.length / 2) % total + total) % total + 1;
+            if (isNaN(current) || current < 1) current = 1;
+            $slideCounter.html('<i class="fas fa-layer-group text-primary me-1"></i> Story <strong>' + current + '</strong> of ' + total);
+        }
+
+        $testimonialCarousel.on('initialized.owl.carousel changed.owl.carousel', updateTestimonialCounter);
+
+        $testimonialCarousel.owlCarousel({
             autoplay: true,
             autoplayTimeout: 6500,
             autoplayHoverPause: true,
@@ -95,6 +110,19 @@
                 '<i class="fas fa-chevron-left"></i>',
                 '<i class="fas fa-chevron-right"></i>'
             ]
+        });
+
+        $autoplayToggle.on('click', function () {
+            testimonialAutoPlaying = !testimonialAutoPlaying;
+            if (testimonialAutoPlaying) {
+                $testimonialCarousel.trigger('play.owl.autoplay', [6500]);
+                $(this).removeClass('paused').attr('aria-pressed', 'false')
+                    .html('<i class="fas fa-pause me-1"></i> Pause Auto-Rotate');
+            } else {
+                $testimonialCarousel.trigger('stop.owl.autoplay');
+                $(this).addClass('paused').attr('aria-pressed', 'true')
+                    .html('<i class="fas fa-play me-1"></i> Resume Auto-Rotate');
+            }
         });
     }
 
@@ -722,6 +750,201 @@
             } else {
                 $faqToggleAllBtn.html('<i class="fas fa-expand-alt me-1"></i> Expand All');
             }
+        });
+
+        // Helper: Open, highlight, and scroll to a specific FAQ collapse ID
+        function openAndFocusFaq(targetSelector, shouldScroll) {
+            var $targetCollapse = $(targetSelector);
+            if (!$targetCollapse.length) return;
+
+            // Reset filters if the target item is hidden
+            var $targetItem = $targetCollapse.closest('.accordion-item');
+            if ($targetItem.hasClass('d-none')) {
+                $faqSearchInput.val('');
+                activeFaqCategory = 'all';
+                $('.faq-filter-pill').removeClass('active').filter('[data-faq-category="all"]').addClass('active');
+                updateFaqVisibility();
+            }
+
+            if (typeof bootstrap !== 'undefined' && bootstrap.Collapse) {
+                bootstrap.Collapse.getOrCreateInstance($targetCollapse[0], { toggle: false }).show();
+            } else {
+                $targetCollapse.addClass('show');
+                $targetItem.find('.accordion-button').removeClass('collapsed').attr('aria-expanded', 'true');
+            }
+
+            $targetItem.removeClass('faq-item-pulse');
+            void $targetItem[0].offsetWidth;
+            $targetItem.addClass('faq-item-pulse');
+
+            if (shouldScroll) {
+                $('html, body').animate({ scrollTop: Math.max(0, $targetItem.offset().top - 110) }, 450);
+            }
+        }
+
+        // Quick-topic chips
+        $(document).on('click', '.faq-topic-chip', function () {
+            var target = $(this).attr('data-faq-target');
+            if (target) {
+                openAndFocusFaq(target, true);
+            }
+        });
+
+        // Inject interactive "Was this helpful?" + "Copy Link" footer into each FAQ body
+        var savedFaqVotes = {};
+        try {
+            savedFaqVotes = JSON.parse(localStorage.getItem('dm3_faq_votes') || '{}');
+        } catch (e) {
+            savedFaqVotes = {};
+        }
+
+        $faqItems.each(function () {
+            var $collapse = $(this).find('.accordion-collapse');
+            var collapseId = $collapse.attr('id');
+            var $body = $(this).find('.accordion-body');
+            if (!collapseId || !$body.length) return;
+
+            var existingVote = savedFaqVotes[collapseId] || '';
+            var footerHtml =
+                '<div class="faq-answer-footer" data-faq-id="' + collapseId + '">' +
+                    '<div class="faq-helpful-group">' +
+                        '<span>Was this helpful?</span>' +
+                        '<button type="button" class="faq-helpful-btn' + (existingVote === 'yes' ? ' voted' : '') + '" data-vote="yes" aria-label="Mark answer as helpful">' +
+                            '<i class="fas fa-thumbs-up me-1"></i> Yes' +
+                        '</button>' +
+                        '<button type="button" class="faq-helpful-btn' + (existingVote === 'no' ? ' voted' : '') + '" data-vote="no" aria-label="Mark answer as not helpful">' +
+                            '<i class="fas fa-thumbs-down me-1"></i> No' +
+                        '</button>' +
+                        '<span class="faq-vote-thanks text-primary fw-semibold' + (existingVote ? '' : ' d-none') + '">Thanks for your feedback!</span>' +
+                    '</div>' +
+                    '<button type="button" class="faq-copy-link-btn" data-copy-target="#' + collapseId + '" aria-label="Copy direct link to question">' +
+                        '<i class="fas fa-link me-1"></i> Copy Link' +
+                    '</button>' +
+                '</div>';
+
+            $body.append(footerHtml);
+        });
+
+        $(document).on('click', '.faq-helpful-btn', function () {
+            var $btn = $(this);
+            var $footer = $btn.closest('.faq-answer-footer');
+            var faqId = $footer.attr('data-faq-id');
+            var vote = $btn.attr('data-vote');
+
+            $footer.find('.faq-helpful-btn').removeClass('voted');
+            $btn.addClass('voted');
+            $footer.find('.faq-vote-thanks').removeClass('d-none');
+
+            if (faqId) {
+                savedFaqVotes[faqId] = vote;
+                try {
+                    localStorage.setItem('dm3_faq_votes', JSON.stringify(savedFaqVotes));
+                } catch (e) {}
+            }
+        });
+
+        $(document).on('click', '.faq-copy-link-btn', function () {
+            var $btn = $(this);
+            var hash = $btn.attr('data-copy-target') || '#faq';
+            var fullUrl = window.location.origin + window.location.pathname + hash;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(fullUrl).catch(function () {});
+            } else {
+                var $temp = $('<input>').val(fullUrl).appendTo('body').select();
+                try { document.execCommand('copy'); } catch (e) {}
+                $temp.remove();
+            }
+
+            if (window.history && window.history.replaceState) {
+                window.history.replaceState(null, '', hash);
+            }
+
+            $btn.html('<i class="fas fa-check text-success me-1"></i> Copied!');
+            setTimeout(function () {
+                $btn.html('<i class="fas fa-link me-1"></i> Copy Link');
+            }, 1800);
+        });
+
+        // Deep-link auto-open if URL hash points to a specific FAQ item
+        if (window.location.hash && /^#collapse(One|Two|Three|Four|Five|Six|Seven|Eight|Nine|Ten)$/.test(window.location.hash)) {
+            setTimeout(function () {
+                openAndFocusFaq(window.location.hash, true);
+            }, 250);
+        }
+
+        // Interactive DME Assistant inside FAQ Help Card
+        var assistPresets = {
+            trial: {
+                reply: '<strong>Free Trial &amp; Pricing:</strong> Start a free trial with no credit card required. Plans include 24/7 support, guided onboarding, and zero hidden maintenance fees.',
+                faqTarget: '#collapseTen'
+            },
+            eligibility: {
+                reply: '<strong>Real-Time EDI 270/271:</strong> DM3 verifies Medicare Part A/B (DMEPOS), Medicare Advantage, and all 50 State Medicaid plans—flagging dual-eligible (QMB/SLMB) &amp; same-or-similar conflicts before shipping.',
+                faqTarget: '#collapseFour'
+            },
+            migration: {
+                reply: '<strong>14-Day Guided Migration:</strong> Our team imports your existing patient charts, physician NPI lists, HCPCS catalog, and custom PDF forms with zero operational downtime.',
+                faqTarget: '#collapseSix'
+            }
+        };
+
+        var $assistReply = $('#faq-assist-reply');
+        var $assistReplyText = $('#faq-assist-reply-text');
+        var $assistInput = $('#faq-assist-input');
+
+        function showAssistReply(html, faqTarget) {
+            $assistReplyText.html(html);
+            $assistReply.removeClass('d-none');
+            if (faqTarget) {
+                openAndFocusFaq(faqTarget, false);
+            }
+        }
+
+        $(document).on('click', '.faq-assist-chip', function () {
+            $('.faq-assist-chip').removeClass('active');
+            $(this).addClass('active');
+            var topic = $(this).attr('data-assist-topic');
+            var preset = assistPresets[topic];
+            if (preset) {
+                showAssistReply(preset.reply, preset.faqTarget);
+            }
+        });
+
+        $('#faq-assistant-form').on('submit', function (e) {
+            e.preventDefault();
+            var q = $.trim($assistInput.val()).toLowerCase();
+            if (!q) return;
+
+            $('.faq-assist-chip').removeClass('active');
+
+            if (q.indexOf('hipaa') !== -1 || q.indexOf('baa') !== -1 || q.indexOf('secur') !== -1 || q.indexOf('encrypt') !== -1) {
+                showAssistReply('<strong>HIPAA &amp; Security:</strong> DM3 uses 256-bit SSL in transit, AES-256 at rest, role-based access, and includes a signed BAA.', '#collapseTwo');
+            } else if (q.indexOf('pdf') !== -1 || q.indexOf('form') !== -1 || q.indexOf('cmn') !== -1 || q.indexOf('dwo') !== -1) {
+                showAssistReply('<strong>Smart PDF Forms:</strong> Upload any PDF, drag-and-drop patient/doctor fields once, and auto-fill in 1 click from any patient chart.', '#collapseThree');
+            } else if (q.indexOf('medicare') !== -1 || q.indexOf('medicaid') !== -1 || q.indexOf('elig') !== -1 || q.indexOf('270') !== -1) {
+                showAssistReply(assistPresets.eligibility.reply, assistPresets.eligibility.faqTarget);
+            } else if (q.indexOf('gps') !== -1 || q.indexOf('driver') !== -1 || q.indexOf('deliver') !== -1 || q.indexOf('sign') !== -1) {
+                showAssistReply('<strong>Live Delivery &amp; POD:</strong> Drivers use mobile devices for turn-by-turn routing, arrival timestamps, and digital patient signatures.', '#collapseFive');
+            } else if (q.indexOf('migrat') !== -1 || q.indexOf('onboard') !== -1 || q.indexOf('setup') !== -1 || q.indexOf('import') !== -1) {
+                showAssistReply(assistPresets.migration.reply, assistPresets.migration.faqTarget);
+            } else if (q.indexOf('audit') !== -1 || q.indexOf('swo') !== -1 || q.indexOf('claim') !== -1 || q.indexOf('denial') !== -1) {
+                showAssistReply('<strong>Audit &amp; Clean Claims:</strong> Every order bundles prescriptions, NPI validation, SWO checklists, and signed PODs for a 99.2%+ clean claim rate.', '#collapseSeven');
+            } else if (q.indexOf('trial') !== -1 || q.indexOf('price') !== -1 || q.indexOf('cost') !== -1 || q.indexOf('free') !== -1) {
+                showAssistReply(assistPresets.trial.reply, assistPresets.trial.faqTarget);
+            } else {
+                // Fallback: filter main FAQ list by the user's query
+                $faqSearchInput.val(q);
+                activeFaqCategory = 'all';
+                $('.faq-filter-pill').removeClass('active').filter('[data-faq-category="all"]').addClass('active');
+                updateFaqVisibility();
+                showAssistReply('We filtered the FAQ list for <strong>"' + $('<div>').text(q).html() + '"</strong>. Need a tailored walkthrough? Click <strong>Schedule Consultation</strong> below.', null);
+            }
+        });
+
+        $('#faq-assist-close').on('click', function () {
+            $assistReply.addClass('d-none');
+            $('.faq-assist-chip').removeClass('active');
         });
     }
 

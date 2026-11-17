@@ -30,7 +30,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="css/style.css?v=6.3" rel="stylesheet">
+    <link href="css/style.css?v=6.4" rel="stylesheet">
 
     <!-- Theme Initializer (Prevents Flash of Wrong Theme) -->
     <script>
@@ -1046,6 +1046,14 @@
                 <h1 class="display-5 fw-bold mb-3">Trusted by Industry-Leading Medical Companies</h1>
                 <p class="mb-0 text-muted fs-5">See how premier DME suppliers and healthcare distributors scale their operations with DM3 System.</p>
             </div>
+            <div class="d-flex justify-content-center align-items-center gap-3 mb-4 flex-wrap testimonial-interactive-bar">
+                <span class="testimonial-slide-counter" id="testimonial-slide-counter">
+                    <i class="fas fa-layer-group text-primary me-1"></i> Story <strong>1</strong> of 4
+                </span>
+                <button type="button" class="btn btn-sm testimonial-autoplay-btn" id="testimonial-autoplay-toggle" aria-pressed="false">
+                    <i class="fas fa-pause me-1"></i> Pause Auto-Rotate
+                </button>
+            </div>
             <div class="testimonial-carousel owl-carousel">
                 <!-- Testimonial 1: Regional DME & Clinical Supply Provider -->
                 <div class="testimonial-item" data-dot="<div class='testimonial-dot-card'><span class='testimonial-dot-label'><i class='fas fa-wheelchair text-primary me-2'></i>DME &amp; Supplies</span></div>">
@@ -1250,6 +1258,15 @@
                             </button>
                         </div>
                     </div>
+                </div>
+                <div class="faq-quick-topics mt-3 pt-3 d-flex flex-wrap align-items-center gap-2">
+                    <span class="faq-quick-label"><i class="fas fa-bolt text-primary me-1"></i> Popular topics:</span>
+                    <button type="button" class="faq-topic-chip" data-faq-target="#collapseTwo">HIPAA &amp; BAA</button>
+                    <button type="button" class="faq-topic-chip" data-faq-target="#collapseFour">Medicare 270/271</button>
+                    <button type="button" class="faq-topic-chip" data-faq-target="#collapseThree">Auto-Fill PDF</button>
+                    <button type="button" class="faq-topic-chip" data-faq-target="#collapseFive">Driver GPS &amp; POD</button>
+                    <button type="button" class="faq-topic-chip" data-faq-target="#collapseSix">14-Day Migration</button>
+                    <button type="button" class="faq-topic-chip" data-faq-target="#collapseTen">Free Trial</button>
                 </div>
             </div>
 
@@ -1480,11 +1497,36 @@
                                 <i class="fas fa-headset"></i>
                             </div>
                             <div>
-                                <h5 class="mb-0 fw-bold text-white">Need a Custom Demo?</h5>
-                                <span class="text-white-50 fs-7">Our DME specialists are ready to help</span>
+                                <h5 class="mb-0 fw-bold text-white">Interactive DME Assistant</h5>
+                                <span class="text-white-50 fs-7">Get instant answers or book a live demo</span>
                             </div>
                         </div>
-                        <p class="fs-7 text-white-50 mb-3">See how DM3 integrates with your billing workflow, Smart PDF forms, and Medicare/Medicaid eligibility checks.</p>
+
+                        <!-- Interactive Quick Prompt Buttons -->
+                        <div class="faq-assistant-prompts d-flex flex-wrap gap-2 mb-3">
+                            <button type="button" class="faq-assist-chip" data-assist-topic="trial">Pricing &amp; Free Trial</button>
+                            <button type="button" class="faq-assist-chip" data-assist-topic="eligibility">EDI 270/271 Check</button>
+                            <button type="button" class="faq-assist-chip" data-assist-topic="migration">Data Migration</button>
+                        </div>
+
+                        <!-- Mini Interactive Question Form -->
+                        <form id="faq-assistant-form" class="faq-assist-form mb-3">
+                            <div class="input-group">
+                                <input type="text" id="faq-assist-input" class="form-control faq-assist-input" placeholder="Ask a quick question..." aria-label="Ask a quick question about DM3">
+                                <button type="submit" class="btn btn-primary faq-assist-send" aria-label="Send question">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Dynamic Answer Bubble -->
+                        <div class="faq-assist-reply d-none mb-3" id="faq-assist-reply" role="status" aria-live="polite">
+                            <div class="d-flex justify-content-between align-items-start gap-2">
+                                <div class="small" id="faq-assist-reply-text"></div>
+                                <button type="button" class="btn-close btn-close-white btn-sm flex-shrink-0" id="faq-assist-close" aria-label="Close reply"></button>
+                            </div>
+                        </div>
+
                         <div class="faq-help-highlights mb-3">
                             <span><i class="fas fa-check-circle text-success me-1"></i> 14-day guided setup</span>
                             <span><i class="fas fa-check-circle text-success me-1"></i> HIPAA BAA included</span>
@@ -1622,7 +1664,7 @@
 
 
     <!-- Template Javascript -->
-    <script src="js/main.js?v=6.2"></script>
+    <script src="js/main.js?v=6.3"></script>
 </body>
 
 </html>
