@@ -2166,6 +2166,160 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.7;
 }
 
+/* FAQ Search & Category Filter Controls */
+.faq-controls-wrap {
+    background: #ffffff;
+    border: 1px solid var(--slate-200);
+    border-radius: 20px;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+}
+.faq-search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.faq-search-icon {
+    position: absolute;
+    left: 1rem;
+    color: var(--slate-400, #94a3b8);
+    font-size: 0.9rem;
+    pointer-events: none;
+}
+.faq-search-input {
+    padding: 0.65rem 2.4rem 0.65rem 2.6rem;
+    border-radius: 50rem;
+    border: 1px solid var(--slate-200);
+    background: var(--slate-50);
+    font-size: 0.92rem;
+    color: var(--slate-900);
+    transition: all 0.25s ease;
+}
+.faq-search-input:focus {
+    background: #ffffff;
+    border-color: var(--primary-main);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    outline: none;
+}
+.faq-search-clear {
+    position: absolute;
+    right: 0.75rem;
+    border: none;
+    background: transparent;
+    color: var(--slate-400, #94a3b8);
+    padding: 0.25rem 0.4rem;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: color 0.2s ease;
+}
+.faq-search-clear:hover {
+    color: var(--slate-700, #334155);
+}
+.faq-filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 50rem;
+    border: 1px solid var(--slate-200);
+    background: var(--slate-50);
+    color: var(--slate-700, #334155);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.22s ease;
+}
+.faq-filter-pill:hover {
+    border-color: var(--primary-main);
+    color: var(--primary-main);
+    background: var(--primary-soft);
+}
+.faq-filter-pill.active {
+    background: var(--primary-main);
+    border-color: var(--primary-main);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+.faq-pill-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.3rem;
+    height: 1.3rem;
+    padding: 0 0.35rem;
+    border-radius: 50rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.22);
+    color: inherit;
+}
+.faq-filter-pill:not(.active) .faq-pill-count {
+    background: rgba(15, 23, 42, 0.08);
+}
+.faq-toggle-all-btn {
+    border-radius: 50rem;
+    border: 1px solid var(--slate-200);
+    background: #ffffff;
+    color: var(--slate-700, #334155);
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.35rem 0.85rem;
+    transition: all 0.2s ease;
+}
+.faq-toggle-all-btn:hover {
+    border-color: var(--primary-main);
+    color: var(--primary-main);
+}
+.faq-q-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+    padding-right: 0.75rem;
+}
+.faq-cat-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.18rem 0.55rem;
+    border-radius: 50rem;
+}
+.faq-cat-tag.tag-platform {
+    background: rgba(37, 99, 235, 0.1);
+    color: #1d4ed8;
+}
+.faq-cat-tag.tag-compliance {
+    background: rgba(16, 185, 129, 0.12);
+    color: #047857;
+}
+.faq-cat-tag.tag-forms {
+    background: rgba(139, 92, 246, 0.12);
+    color: #6d28d9;
+}
+.faq-cat-tag.tag-billing {
+    background: rgba(2, 132, 199, 0.12);
+    color: #0369a1;
+}
+.faq-cat-tag.tag-logistics {
+    background: rgba(245, 158, 11, 0.14);
+    color: #b45309;
+}
+.faq-empty-state {
+    background: #ffffff;
+    border: 1px dashed var(--slate-300, #cbd5e1);
+}
+.faq-help-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1rem;
+    font-size: 0.78rem;
+    color: #e2e8f0;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
 /* FAQ Support Side Card */
 .faq-help-card {
     background: linear-gradient(135deg, #0a192f 0%, #173860 100%);
@@ -3767,6 +3921,75 @@ h1, h2, h3, h4, h5, h6 {
     background: #0d1f38 !important;
     color: #94a3b8 !important;
     border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+[data-theme="dark"] .faq-controls-wrap {
+    background: #0d1f38 !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+[data-theme="dark"] .faq-search-input {
+    background: #071324 !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    color: #f8fafc !important;
+}
+[data-theme="dark"] .faq-search-input::placeholder {
+    color: #64748b;
+}
+[data-theme="dark"] .faq-search-input:focus {
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18);
+}
+[data-theme="dark"] .faq-filter-pill {
+    background: #071324 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #cbd5e1 !important;
+}
+[data-theme="dark"] .faq-filter-pill:hover {
+    border-color: #38bdf8 !important;
+    color: #38bdf8 !important;
+}
+[data-theme="dark"] .faq-filter-pill.active {
+    background: var(--primary-main) !important;
+    border-color: var(--primary-main) !important;
+    color: #ffffff !important;
+}
+[data-theme="dark"] .faq-filter-pill:not(.active) .faq-pill-count {
+    background: rgba(255, 255, 255, 0.1);
+}
+[data-theme="dark"] .faq-toggle-all-btn {
+    background: #0d1f38 !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    color: #cbd5e1 !important;
+}
+[data-theme="dark"] .faq-toggle-all-btn:hover {
+    border-color: #38bdf8 !important;
+    color: #38bdf8 !important;
+}
+[data-theme="dark"] .faq-cat-tag.tag-platform {
+    background: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+}
+[data-theme="dark"] .faq-cat-tag.tag-compliance {
+    background: rgba(16, 185, 129, 0.2);
+    color: #6ee7b7;
+}
+[data-theme="dark"] .faq-cat-tag.tag-forms {
+    background: rgba(139, 92, 246, 0.22);
+    color: #c4b5fd;
+}
+[data-theme="dark"] .faq-cat-tag.tag-billing {
+    background: rgba(14, 165, 233, 0.2);
+    color: #7dd3fc;
+}
+[data-theme="dark"] .faq-cat-tag.tag-logistics {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fcd34d;
+}
+[data-theme="dark"] .faq-empty-state {
+    background: #0d1f38 !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+[data-theme="dark"] .faq-empty-state h6 {
+    color: #f8fafc !important;
 }
 
 /* Global Helpers in Dark Mode */

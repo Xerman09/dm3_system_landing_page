@@ -30,7 +30,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="css/style.css?v=6.2" rel="stylesheet">
+    <link href="css/style.css?v=6.3" rel="stylesheet">
 
     <!-- Theme Initializer (Prevents Flash of Wrong Theme) -->
     <script>
@@ -1307,97 +1307,262 @@
     <!-- FAQ Start -->
     <div class="container-fluid FAQ faq-modern overflow-hidden py-5" id="faq">
         <div class="container py-5">
-            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 820px;">
                 <span class="hero-badge mb-2"><i class="fas fa-question-circle me-1"></i> Frequently Asked Questions</span>
                 <h1 class="display-5 fw-bold mb-3">Got Questions? We've Got Answers</h1>
                 <p class="mb-0 text-muted fs-5">Everything you need to know about setting up, integrating, and scaling your DME practice with DM3 System.</p>
             </div>
-            <div class="row g-5 align-items-center">
+
+            <!-- FAQ Search & Category Filter Controls -->
+            <div class="faq-controls-wrap mb-4 wow fadeInUp" data-wow-delay="0.15s">
+                <div class="row g-3 align-items-center">
+                    <div class="col-lg-5">
+                        <div class="faq-search-box">
+                            <i class="fas fa-search faq-search-icon" aria-hidden="true"></i>
+                            <input type="text" id="faq-search-input" class="form-control faq-search-input" placeholder="Search FAQs (e.g., HIPAA, Medicare, Smart Forms, GPS)..." aria-label="Search frequently asked questions">
+                            <button type="button" id="faq-search-clear" class="faq-search-clear d-none" aria-label="Clear search">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="faq-filter-pills d-flex flex-wrap gap-2 justify-content-lg-end" role="tablist" aria-label="Filter FAQs by category">
+                            <button type="button" class="faq-filter-pill active" data-faq-category="all">
+                                <i class="fas fa-th-large me-1"></i> All <span class="faq-pill-count">10</span>
+                            </button>
+                            <button type="button" class="faq-filter-pill" data-faq-category="platform">
+                                <i class="fas fa-rocket me-1"></i> Platform &amp; Setup
+                            </button>
+                            <button type="button" class="faq-filter-pill" data-faq-category="compliance">
+                                <i class="fas fa-shield-alt me-1"></i> HIPAA &amp; Audits
+                            </button>
+                            <button type="button" class="faq-filter-pill" data-faq-category="forms">
+                                <i class="fas fa-magic me-1"></i> Smart Forms
+                            </button>
+                            <button type="button" class="faq-filter-pill" data-faq-category="billing">
+                                <i class="fas fa-file-invoice-dollar me-1"></i> Eligibility &amp; Claims
+                            </button>
+                            <button type="button" class="faq-filter-pill" data-faq-category="logistics">
+                                <i class="fas fa-truck me-1"></i> Delivery &amp; Fleet
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-5 align-items-start">
 
                 <!-- FAQ Accordion -->
                 <div class="col-lg-7 wow fadeInLeft" data-wow-delay="0.1s">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="faq-results-meta text-muted small" id="faq-results-meta">Showing <strong>10</strong> of 10 questions</span>
+                        <button type="button" class="btn btn-sm faq-toggle-all-btn" id="faq-toggle-all">
+                            <i class="fas fa-expand-alt me-1"></i> Expand All
+                        </button>
+                    </div>
+
                     <div class="accordion faq-accordion" id="accordionExample">
 
                         <!-- Question 1 -->
-                        <div class="accordion-item">
+                        <div class="accordion-item" data-faq-category="platform">
                             <h2 class="accordion-header" id="headingOne">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    What is DM3 System and how does it streamline DME operations?
+                                    <span class="faq-q-wrap">
+                                        <span class="faq-cat-tag tag-platform">Platform</span>
+                                        <span>What is DM3 System and how does it streamline DME operations?</span>
+                                    </span>
                                 </button>
                             </h2>
                             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                    DM3 System is an all-in-one healthcare operations platform engineered specifically for Durable Medical Equipment (DME) providers, clinics, and supply managers. It brings together patient intake, doctor credentialing, live delivery routing with digital proof-of-delivery, insurance pre-authorizations, and Service Work Orders (SWO) into one unified cloud dashboard.
+                                    DM3 System is an all-in-one cloud healthcare operations platform engineered specifically for Durable Medical Equipment (DME) providers, clinics, and supply managers. It unifies patient intake, physician credentialing, real-time Medicare/Medicaid eligibility, live delivery routing with digital proof-of-delivery, insurance claims, and Service Work Orders (SWO) in a single dashboard.
                                 </div>
                             </div>
                         </div>
 
                         <!-- Question 2 -->
-                        <div class="accordion-item">
+                        <div class="accordion-item" data-faq-category="compliance">
                             <h2 class="accordion-header" id="headingTwo">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    Is DM3 System fully HIPAA compliant and secure?
+                                    <span class="faq-q-wrap">
+                                        <span class="faq-cat-tag tag-compliance">HIPAA &amp; Security</span>
+                                        <span>Is DM3 System fully HIPAA compliant and secure?</span>
+                                    </span>
                                 </button>
                             </h2>
                             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                    Yes, absolutely. DM3 adheres strictly to HIPAA regulations, featuring end-to-end 256-bit SSL encryption in transit and AES-256 encryption at rest. We maintain strict role-based access controls, automatic session timeouts, and comprehensive audit logs for all medical data access.
+                                    Yes, absolutely. DM3 adheres strictly to HIPAA regulations and provides a Business Associate Agreement (BAA) for covered entities. All Protected Health Information (PHI) is secured with 256-bit SSL encryption in transit and AES-256 encryption at rest, backed by role-based access controls, automatic session timeouts, and immutable audit logs.
                                 </div>
                             </div>
                         </div>
 
                         <!-- Question 3 -->
-                        <div class="accordion-item">
+                        <div class="accordion-item" data-faq-category="forms">
                             <h2 class="accordion-header" id="headingThree">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    How does the Customized Smart Forms feature work?
+                                    <span class="faq-q-wrap">
+                                        <span class="faq-cat-tag tag-forms">Smart Forms</span>
+                                        <span>How does the Customized Smart Forms feature work?</span>
+                                    </span>
                                 </button>
                             </h2>
                             <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                    You can upload any existing PDF form your facility uses (such as Medicare CMN forms, referral sheets, or custom intake documents). Using our visual drag-and-drop mapper, you place patient and provider fields exactly where they belong. When you view any patient record, 1 click generates and prints an error-free, auto-filled PDF ready for submission.
+                                    Upload any existing PDF form your facility uses—such as Medicare CMN forms, Detailed Written Orders (DWO), referral sheets, or custom intake packets. Using our visual drag-and-drop field mapper, you place patient, physician, and facility data fields once. From any patient chart, 1 click generates an error-free, auto-filled PDF ready to print, download, or sign.
                                 </div>
                             </div>
                         </div>
 
                         <!-- Question 4 -->
-                        <div class="accordion-item">
+                        <div class="accordion-item" data-faq-category="billing">
                             <h2 class="accordion-header" id="headingFour">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                    Can drivers use DM3 for real-time delivery tracking and digital signatures?
+                                    <span class="faq-q-wrap">
+                                        <span class="faq-cat-tag tag-billing">Eligibility</span>
+                                        <span>Can DM3 check patient eligibility for Medicare and Medicaid in real time?</span>
+                                    </span>
                                 </button>
                             </h2>
                             <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                    Yes! Delivery drivers can access their delivery queue from mobile tablets or smartphones, view optimized delivery routes, record delivery timestamps, and collect digital patient signatures upon equipment handover with automatic sync back to headquarters.
+                                    Yes! DM3 includes built-in real-time EDI 270/271 eligibility verification for Medicare Part A/B (DMEPOS), Medicare Advantage, and all 50 State Medicaid plans. It automatically flags dual-eligible (QMB/SLMB) patients, surfaces remaining deductibles and copays, and screens for Medicare same-or-similar DMEPOS conflicts before you ship equipment.
                                 </div>
                             </div>
                         </div>
 
                         <!-- Question 5 -->
-                        <div class="accordion-item">
+                        <div class="accordion-item" data-faq-category="logistics">
                             <h2 class="accordion-header" id="headingFive">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                                    Can DM3 check patient eligibility for Medicare and Medicaid in real time?
+                                    <span class="faq-q-wrap">
+                                        <span class="faq-cat-tag tag-logistics">Delivery &amp; GPS</span>
+                                        <span>Can drivers use DM3 for real-time delivery tracking and digital signatures?</span>
+                                    </span>
                                 </button>
                             </h2>
                             <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                    Yes! DM3 includes built-in real-time EDI 270/271 eligibility verification for Medicare Part A/B (DMEPOS), Medicare Advantage, and State Medicaid plans. It automatically detects dual-eligible (QMB/SLMB) patients, checks remaining deductibles and copays, and screens for Medicare same-or-similar DMEPOS conflicts before you ship equipment.
+                                    Yes! Field drivers access their daily delivery queue from any mobile phone or tablet, follow optimized turn-by-turn routes, log arrival timestamps, and capture digital patient signatures and photos upon equipment handover—all syncing instantaneously back to dispatch and billing.
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Question 6 -->
+                        <div class="accordion-item" data-faq-category="platform">
+                            <h2 class="accordion-header" id="headingSix">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                    <span class="faq-q-wrap">
+                                        <span class="faq-cat-tag tag-platform">Onboarding</span>
+                                        <span>How long does onboarding take and can we migrate existing patient data?</span>
+                                    </span>
+                                </button>
+                            </h2>
+                            <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    Most DME suppliers are fully up and running within 14 days—with zero downtime. Our onboarding specialists assist with importing your existing patient charts, referring physician NPI directories, HCPCS catalogs, and custom PDF templates directly into DM3 so your team can start processing orders immediately.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Question 7 -->
+                        <div class="accordion-item" data-faq-category="billing">
+                            <h2 class="accordion-header" id="headingSeven">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                                    <span class="faq-q-wrap">
+                                        <span class="faq-cat-tag tag-billing">Claims &amp; Billing</span>
+                                        <span>How does DM3 reduce claim denials and speed up reimbursements?</span>
+                                    </span>
+                                </button>
+                            </h2>
+                            <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    DM3 validates ICD-10 diagnosis codes, HCPCS modifiers, prior authorizations, and required physician signatures before a claim leaves your office. Combined with real-time eligibility and same-or-similar checks, providers achieve a 99.2%+ first-pass clean claim rate and significantly faster payer turnaround.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Question 8 -->
+                        <div class="accordion-item" data-faq-category="compliance">
+                            <h2 class="accordion-header" id="headingEight">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                                    <span class="faq-q-wrap">
+                                        <span class="faq-cat-tag tag-compliance">Audit Readiness</span>
+                                        <span>How does DM3 keep our practice ready for Medicare &amp; payer audits?</span>
+                                    </span>
+                                </button>
+                            </h2>
+                            <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    Every patient order automatically compiles an audit-ready packet containing the prescription, physician NPI validation, eligibility response, completed SWO compliance checklist, and signed Proof of Delivery (POD). When an audit request arrives, you can export the complete documentation bundle in seconds.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Question 9 -->
+                        <div class="accordion-item" data-faq-category="logistics">
+                            <h2 class="accordion-header" id="headingNine">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                                    <span class="faq-q-wrap">
+                                        <span class="faq-cat-tag tag-logistics">Inventory</span>
+                                        <span>Does DM3 support warehouse inventory tracking and multi-location teams?</span>
+                                    </span>
+                                </button>
+                            </h2>
+                            <div id="collapseNine" class="accordion-collapse collapse" aria-labelledby="headingNine"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    Yes. DM3 synchronizes serialized and non-serialized DME inventory across warehouses, delivery vans, and branch offices in real time. As soon as an item is assigned to a Service Work Order or delivered to a patient, stock levels update automatically to prevent double-booking or shortages.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Question 10 -->
+                        <div class="accordion-item" data-faq-category="platform">
+                            <h2 class="accordion-header" id="headingTen">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                    <span class="faq-q-wrap">
+                                        <span class="faq-cat-tag tag-platform">Pricing &amp; Support</span>
+                                        <span>What support is included and can we try DM3 before committing?</span>
+                                    </span>
+                                </button>
+                            </h2>
+                            <div id="collapseTen" class="accordion-collapse collapse" aria-labelledby="headingTen"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    You can start a free trial with no credit card required to explore patient management, Smart Forms, and eligibility verification firsthand. Every plan includes 24/7 direct support, guided staff training, and ongoing platform updates with no hidden maintenance fees.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Empty State for Search/Filter -->
+                    <div class="faq-empty-state text-center p-4 rounded-4 d-none" id="faq-empty-state">
+                        <div class="mb-2 text-primary fs-3"><i class="fas fa-search"></i></div>
+                        <h6 class="fw-bold mb-1">No matching questions found</h6>
+                        <p class="text-muted small mb-3">Try a different keyword or switch back to all categories.</p>
+                        <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-4" id="faq-reset-filters">
+                            <i class="fas fa-undo me-1"></i> Reset Filters
+                        </button>
                     </div>
                 </div>
 
@@ -1407,7 +1572,7 @@
                         <img src="img/features-1.png" class="img-fluid w-100" alt="DM3 System Features">
                     </div>
                     <div class="faq-help-card">
-                        <div class="d-flex align-items-center gap-3 mb-2">
+                        <div class="d-flex align-items-center gap-3 mb-3">
                             <div class="hero-stat-icon" style="background:#1e40af;color:#fff;">
                                 <i class="fas fa-headset"></i>
                             </div>
@@ -1416,7 +1581,12 @@
                                 <span class="text-white-50 fs-7">Our DME specialists are ready to help</span>
                             </div>
                         </div>
-                        <p class="fs-7 text-white-50 mb-3">Learn how DM3 can integrate with your current billing system and clinical workflow.</p>
+                        <p class="fs-7 text-white-50 mb-3">See how DM3 integrates with your billing workflow, Smart PDF forms, and Medicare/Medicaid eligibility checks.</p>
+                        <div class="faq-help-highlights mb-3">
+                            <span><i class="fas fa-check-circle text-success me-1"></i> 14-day guided setup</span>
+                            <span><i class="fas fa-check-circle text-success me-1"></i> HIPAA BAA included</span>
+                            <span><i class="fas fa-check-circle text-success me-1"></i> 24/7 live support</span>
+                        </div>
                         <a href="https://dm3.dm3system.com" class="btn btn-light rounded-pill py-2 px-4 w-100 fw-bold text-primary">Schedule Consultation <i class="fas fa-arrow-right ms-2"></i></a>
                     </div>
                 </div>
@@ -1549,7 +1719,7 @@
 
 
     <!-- Template Javascript -->
-    <script src="js/main.js?v=6.1"></script>
+    <script src="js/main.js?v=6.2"></script>
 </body>
 
 </html>

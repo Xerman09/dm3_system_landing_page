@@ -637,4 +637,92 @@
         applyTheme(nextTheme);
     });
 
+    // =========================================================================
+    // INTERACTIVE FAQ SEARCH, CATEGORY FILTER & EXPAND/COLLAPSE ALL
+    // =========================================================================
+    var $faqAccordion = $('#accordionExample');
+    if ($faqAccordion.length) {
+        var activeFaqCategory = 'all';
+        var faqAllExpanded = false;
+        var $faqItems = $faqAccordion.find('.accordion-item');
+        var totalFaqCount = $faqItems.length;
+        var $faqSearchInput = $('#faq-search-input');
+        var $faqSearchClear = $('#faq-search-clear');
+        var $faqResultsMeta = $('#faq-results-meta');
+        var $faqEmptyState = $('#faq-empty-state');
+        var $faqToggleAllBtn = $('#faq-toggle-all');
+
+        function updateFaqVisibility() {
+            var query = $.trim($faqSearchInput.val()).toLowerCase();
+            var visibleCount = 0;
+
+            $faqSearchClear.toggleClass('d-none', query.length === 0);
+
+            $faqItems.each(function () {
+                var $item = $(this);
+                var cat = $item.attr('data-faq-category') || '';
+                var text = $item.text().toLowerCase();
+                var matchesCat = activeFaqCategory === 'all' || cat === activeFaqCategory;
+                var matchesQuery = !query || text.indexOf(query) !== -1;
+
+                if (matchesCat && matchesQuery) {
+                    $item.removeClass('d-none');
+                    visibleCount++;
+                } else {
+                    $item.addClass('d-none');
+                }
+            });
+
+            $faqResultsMeta.html('Showing <strong>' + visibleCount + '</strong> of ' + totalFaqCount + ' questions');
+            $faqEmptyState.toggleClass('d-none', visibleCount > 0);
+            $faqToggleAllBtn.prop('disabled', visibleCount === 0);
+        }
+
+        $(document).on('click', '.faq-filter-pill', function () {
+            $('.faq-filter-pill').removeClass('active');
+            $(this).addClass('active');
+            activeFaqCategory = $(this).attr('data-faq-category') || 'all';
+            updateFaqVisibility();
+        });
+
+        $faqSearchInput.on('input', function () {
+            updateFaqVisibility();
+        });
+
+        $faqSearchClear.on('click', function () {
+            $faqSearchInput.val('').trigger('focus');
+            updateFaqVisibility();
+        });
+
+        $('#faq-reset-filters').on('click', function () {
+            $faqSearchInput.val('');
+            activeFaqCategory = 'all';
+            $('.faq-filter-pill').removeClass('active').filter('[data-faq-category="all"]').addClass('active');
+            updateFaqVisibility();
+        });
+
+        $faqToggleAllBtn.on('click', function () {
+            faqAllExpanded = !faqAllExpanded;
+            var $visibleItems = $faqItems.not('.d-none');
+
+            $visibleItems.each(function () {
+                var $collapse = $(this).find('.accordion-collapse');
+                var $btn = $(this).find('.accordion-button');
+                if (faqAllExpanded) {
+                    $collapse.removeAttr('data-bs-parent').addClass('show');
+                    $btn.removeClass('collapsed').attr('aria-expanded', 'true');
+                } else {
+                    $collapse.attr('data-bs-parent', '#accordionExample').removeClass('show');
+                    $btn.addClass('collapsed').attr('aria-expanded', 'false');
+                }
+            });
+
+            if (faqAllExpanded) {
+                $faqToggleAllBtn.html('<i class="fas fa-compress-alt me-1"></i> Collapse All');
+            } else {
+                $faqToggleAllBtn.html('<i class="fas fa-expand-alt me-1"></i> Expand All');
+            }
+        });
+    }
+
 })(jQuery);
